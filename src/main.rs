@@ -14,6 +14,7 @@ fn main() {
     .build();
 
   let animation_list = runtime::state::load_all_animations(&mut rl, &thread, &state);
+  // TODO don't unwrap
   let rl_anims = &animation_list.idle.unwrap();
 
   // TODO randomly pick from the list each time the state changes
