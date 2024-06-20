@@ -28,6 +28,9 @@ pub struct AnimationRaw {
 
 pub struct AnimationTexture2D {
   pub name: String,
+  pub width: u16,
+  pub height: u16,
+
   pub frames: Vec<raylib::prelude::Texture2D>,
   pub frame_delay: u32,
   pub current_frame: u32,
@@ -35,6 +38,7 @@ pub struct AnimationTexture2D {
 }
 
 pub fn load_gif(path: PathBuf) -> AnimationRaw {
+  println!("Loading gif: {:?}", path);
   let file = File::open(&path).unwrap();
   let mut decoder = gif::DecodeOptions::new();
   decoder.set_color_output(gif::ColorOutput::RGBA);
@@ -70,6 +74,8 @@ pub fn load_gif(path: PathBuf) -> AnimationRaw {
 pub fn raw_to_texture_2d(rl: &mut raylib::prelude::RaylibHandle, thread: &raylib::prelude::RaylibThread, anim: &AnimationRaw) -> AnimationTexture2D {
   AnimationTexture2D {
     name: anim.name.clone(),
+    width: anim.width,
+    height: anim.height,
     frames: anim.frames.iter().map(|f| {
       let img = raylib::prelude::Image::load_image_from_mem(".png", f).unwrap();
       rl.load_texture_from_image(thread, &img).unwrap()
