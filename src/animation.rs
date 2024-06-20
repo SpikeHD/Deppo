@@ -15,6 +15,10 @@ pub struct Gif {
 
 pub struct AnimationRaw {
   pub name: String,
+
+  pub width: u16,
+  pub height: u16,
+
   // PNG buffer
   pub frames: Vec<Vec<u8>>,
   pub frame_delay: u32,
@@ -54,6 +58,8 @@ pub fn load_gif(path: PathBuf) -> AnimationRaw {
   // Create an Animation struct
   AnimationRaw {
     name: path.file_name().unwrap().to_str().unwrap().to_string(),
+    width: frames[0].width,
+    height: frames[0].height,
     frames: frames.iter().map(|f| frame_to_png(f)).collect(),
     frame_delay: 0,
     current_frame: 0,
