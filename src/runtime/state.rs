@@ -41,12 +41,22 @@ pub struct State {
   pub path: PathBuf,
   pub config: StateConfig,
 
+  pub move_state: MovementState,
+
   pub current_frame: u32,
   pub current_animation: String,
 
   pub velocity_frozen: bool,
   pub velocity: (f32, f32),
   pub position: (f32, f32),
+}
+
+#[derive(PartialEq)]
+pub enum MovementState {
+  Idle,
+  Walk,
+  Drag,
+  Click,
 }
 
 impl State {
@@ -69,6 +79,36 @@ impl State {
       self.position.1 += self.velocity.1;
     }
   }
+
+  pub fn handle_state_change(&mut self, new_state: MovementState) {
+    // TODO this wont work properly for now, we need to account for clicks properly
+    match new_state {
+      MovementState::Idle => {
+        if self.move_state != MovementState::Idle {
+          self.change_animation("idle");
+          self.move_state = MovementState::Idle;
+        }
+      },
+      MovementState::Walk => {
+        if self.move_state != MovementState::Walk {
+          self.change_animation("walk");
+          self.move_state = MovementState::Walk;
+        }
+      },
+      MovementState::Drag => {
+        if self.move_state != MovementState::Drag {
+          self.change_animation("drag");
+          self.move_state = MovementState::Drag;
+        }
+      },
+      MovementState::Click => {
+        if self.move_state != MovementState::Click {
+          self.change_animation("click");
+          self.move_state = MovementState::Click;
+        }
+      },
+    }
+  }
 }
 
 pub fn load(path: PathBuf) -> State {
@@ -78,6 +118,7 @@ pub fn load(path: PathBuf) -> State {
   State {
     name: path.file_name().unwrap().to_str().unwrap().to_string(),
     path: path.parent().unwrap().to_path_buf(),
+    move_state: MovementState::Idle,
     config,
     current_frame: 0,
     current_animation: "idle".to_string(),
