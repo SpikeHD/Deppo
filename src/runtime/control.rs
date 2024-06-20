@@ -19,6 +19,10 @@ pub fn mouse_as_vec2() -> Vector2 {
 }
 
 pub fn handle_mouse(rl: &mut RaylibHandle, state: &mut State, width: i32, height: i32) {
+  if state.config.can_drag.is_none() || !state.config.can_drag.unwrap() {
+    return;
+  }
+
   let current_mouse_pos = mouse_as_vec2();
 
   if rl.is_mouse_button_down(MouseButton::MOUSE_BUTTON_LEFT) {

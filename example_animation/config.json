@@ -1,0 +1,15 @@
+{
+  "name": "Test Creature",
+  "fps": 30,
+  "scale": 0.5,
+
+  "can_move": true,
+  "can_drag": true,
+  "can_click": false,
+  "can_fall": true,
+
+  "animations": {
+    "idle": ["test.gif"],
+    "drag": ["test.gif"]
+  }
+}

@@ -29,7 +29,7 @@ pub struct StateConfig {
   pub can_move: Option<bool>,
   pub can_drag: Option<bool>,
   pub can_click: Option<bool>,
-  pub can_face: Option<bool>,
+  pub can_fall: Option<bool>,
 
   pub move_speed: Option<f32>,
 

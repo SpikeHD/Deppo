@@ -2,6 +2,7 @@ use raylib::prelude::*;
 
 mod animation;
 mod runtime;
+mod window;
 
 fn main() {
   let mut state = runtime::state::load(std::path::PathBuf::from("example_animation/config.json"));
@@ -9,7 +10,7 @@ fn main() {
   let (mut rl, thread) = raylib::init()
     .title("Gif Test")
     .transparent()
-    //.undecorated()
+    .undecorated()
     .build();
 
   let animation_list = runtime::state::load_all_animations(&mut rl, &thread, &state);
@@ -35,6 +36,11 @@ fn main() {
   while !rl.window_should_close() {
     // Hanlders
     runtime::control::handle_mouse(&mut rl, &mut state, w_final, h_final);
+    
+    // Do window-based physics
+    runtime::physics::do_gravity(&mut state, &mut rl);
+    runtime::physics::do_horizontal_checks(&mut state, &mut rl);
+    runtime::physics::do_movement(&mut state, &mut rl);
 
     let frame = &rl_anim.frames[state.current_frame as usize];
     let mut d = rl.begin_drawing(&thread);
