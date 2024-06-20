@@ -1,0 +1,9 @@
+[package]
+name = "deppo"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+gif = "0.13.1"
+png = "0.17.13"
+raylib = "5.0.1"
