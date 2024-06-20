@@ -7,6 +7,9 @@ fn main() {
   let anim = animation::load_gif(std::path::PathBuf::from("test.gif"));
   let (w, h) = (anim.width as i32, anim.height as i32);
 
+  // TODO use for scaling
+  let (w_f, h_f) = (w as f32, h as f32);
+
   let (mut rl, thread) = raylib::init()
     .size(w, h)
     .title("Gif Test")
