@@ -22,7 +22,9 @@ pub struct AnimationListBuffer {
 pub struct StateConfig {
   pub name: String,
   pub fps: u32,
-  pub scale: f32,
+  // used for - for example - running a 15fps animation at 30fps, but retaining the speed
+  pub timescale: Option<f32>,
+  pub scale: Option<f32>,
   
   pub can_move: Option<bool>,
   pub can_drag: Option<bool>,
@@ -45,6 +47,28 @@ pub struct State {
   pub velocity_frozen: bool,
   pub velocity: (f32, f32),
   pub position: (f32, f32),
+}
+
+impl State {
+  pub fn change_animation(&mut self, animation: &str) {
+    self.current_animation = animation.to_string();
+    self.current_frame = 0;
+  }
+
+  pub fn set_velocity(&mut self, velocity: (f32, f32)) {
+    self.velocity = velocity;
+  }
+
+  pub fn set_position(&mut self, position: (f32, f32)) {
+    self.position = position;
+  }
+
+  pub fn update(&mut self) {
+    if !self.velocity_frozen {
+      self.position.0 += self.velocity.0;
+      self.position.1 += self.velocity.1;
+    }
+  }
 }
 
 pub fn load(path: PathBuf) -> State {

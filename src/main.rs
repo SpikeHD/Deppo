@@ -6,11 +6,10 @@ mod runtime;
 fn main() {
   let mut state = runtime::state::load(std::path::PathBuf::from("example_animation/config.json"));
 
-
   let (mut rl, thread) = raylib::init()
     .title("Gif Test")
     .transparent()
-    .undecorated()
+    //.undecorated()
     .build();
 
   let animation_list = runtime::state::load_all_animations(&mut rl, &thread, &state);
@@ -20,21 +19,37 @@ fn main() {
   let rl_anim = &rl_anims[0];
   
   let (w, h) = (rl_anim.width as i32, rl_anim.height as i32);
-  // TODO use for scaling
-  let (w_f, h_f) = (w as f32, h as f32);
+  // used for scaling
+  let (mut w_f, mut h_f) = (w as f32, h as f32);
 
-  rl.set_window_size(w, h);
+  if let Some(scale) = state.config.scale {
+    w_f *= scale;
+    h_f *= scale;
+  }
+
+  let (w_final, h_final) = (w_f as i32, h_f as i32);
+
+  rl.set_window_size(w_final, h_final);
   rl.set_target_fps(state.config.fps as u32);
 
   while !rl.window_should_close() {
-    let frame = &rl_anim.frames[state.current_frame as usize];
+    // Hanlders
+    runtime::control::handle_mouse(&mut rl, &mut state, w_final, h_final);
 
+    let frame = &rl_anim.frames[state.current_frame as usize];
     let mut d = rl.begin_drawing(&thread);
 
-    println!("Frame: {}", state.current_frame);
-
     d.clear_background(Color::BLANK);
-    d.draw_texture_ex(frame, Vector2{ x: 0., y: 0. }, 0., 1., Color::WHITE);
+    d.draw_texture_ex(
+      frame,
+      Vector2{ x: 0., y: 0. },
+      0.,
+      match state.config.scale {
+        Some(scale) => scale,
+        None => 1.,
+      },
+      Color::WHITE
+    );
 
     state.current_frame += 1;
     if state.current_frame >= rl_anim.frame_count {
