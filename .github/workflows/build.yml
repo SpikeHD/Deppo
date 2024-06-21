@@ -110,14 +110,14 @@ jobs:
 
       - name: (Unix) Upload binary
         if: matrix.config.platform != 'windows-latest'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Deppo ${{ matrix.config.name }}
           path: target/${{ matrix.config.target }}/release/deppo
 
       - name: (Windows) Upload binary
         if: matrix.config.platform == 'windows-latest'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Deppo ${{ matrix.config.name }}
           path: target/${{ matrix.config.target }}/release/deppo.exe
