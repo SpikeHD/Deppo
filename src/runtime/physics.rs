@@ -29,7 +29,7 @@ pub fn do_gravity(state: &mut State, rl: &mut RaylibHandle) {
 
   if state.velocity.1 != 0.0 {
     state.handle_state_change(super::state::MovementState::Falling);
-  } else {
+  } else if state.move_state == super::state::MovementState::Falling {
     state.handle_state_change(super::state::MovementState::Idle);
   }
 }

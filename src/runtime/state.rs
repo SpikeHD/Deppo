@@ -27,6 +27,7 @@ pub struct StateConfig {
   // used for - for example - running a 15fps animation at 30fps, but retaining the speed
   pub timescale: Option<f32>,
   pub scale: Option<f32>,
+  pub behaviour_change_rarity: Option<f32>,
   
   pub can_move: Option<bool>,
   pub can_drag: Option<bool>,
@@ -53,7 +54,7 @@ pub struct State {
   pub position: (f32, f32),
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum MovementState {
   Idle,
   Walk,
