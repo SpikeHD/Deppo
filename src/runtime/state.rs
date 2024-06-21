@@ -24,16 +24,19 @@ pub struct AnimationListBuffer {
 pub struct StateConfig {
   pub name: String,
   pub fps: u32,
-  // used for - for example - running a 15fps animation at 30fps, but retaining the speed
+  // TODO used for - for example - running a 15fps animation at 30fps, but retaining the speed
   pub timescale: Option<f32>,
   pub scale: Option<f32>,
   pub behaviour_change_rarity: Option<f32>,
-  
+
   pub can_move: Option<bool>,
   pub can_drag: Option<bool>,
   pub can_click: Option<bool>,
   pub can_fall: Option<bool>,
 
+  // TODO allow variablility in this.
+  // eg. change to max_speed and also add a speed_can_be_variable flag
+  // and slow down the animation based on speed
   pub move_speed: Option<f32>,
 
   pub animations: AnimationList,
@@ -48,6 +51,9 @@ pub struct State {
   pub move_state_changed: bool,
 
   pub current_frame: u32,
+
+  pub flip_x: bool,
+  pub flip_y: bool,
 
   pub velocity_frozen: bool,
   pub velocity: (f32, f32),
@@ -134,6 +140,10 @@ pub fn load(path: PathBuf) -> State {
     move_state_changed: true,
     config,
     current_frame: 0,
+
+    flip_x: false,
+    flip_y: false,
+
     velocity_frozen: false,
     velocity: (0., 0.),
     position: (0., 0.),

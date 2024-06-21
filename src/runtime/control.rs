@@ -34,7 +34,7 @@ pub fn handle_mouse(rl: &mut RaylibHandle, state: &mut State, width: i32, height
     // Ignore if mouse pos is negative
     if current_mouse_pos.x > 0.0 || current_mouse_pos.y > 0.0 {
       // Move the window
-      rl.set_window_position(current_mouse_pos.x as i32 - width/2, current_mouse_pos.y as i32 - height/2);
+      rl.set_window_position(current_mouse_pos.x as i32 - width/2, current_mouse_pos.y as i32);
       state.handle_state_change(super::state::MovementState::Drag);
     }
   } else if state.velocity_frozen {

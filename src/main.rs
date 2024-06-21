@@ -22,7 +22,7 @@ fn main() {
 
   // TODO this doesn't work but I would like it to!!
   rl.get_window_state().set_window_topmost(true);
-  
+
   let animation_list = runtime::state::load_all_animations(&mut rl, &thread, &state);
   let mut rl_anims = animation_list.idle.as_ref().unwrap_or_else(|| {
     log!("No idle animation found. A character should have at least one idle animation. Exiting.");
@@ -82,17 +82,24 @@ fn main() {
     }
 
     let frame = &rl_anim.frames[state.current_frame as usize];
+
+    // Create a rectangle to contain the frame
+    let source = Rectangle::new(
+      0.,
+      0.,
+      if state.flip_x { -frame.width as f32 } else { frame.width as f32 },
+      if state.flip_y { -frame.height as f32 } else { frame.height as f32 }
+    );
+
     let mut d = rl.begin_drawing(&thread);
 
     d.clear_background(Color::BLANK);
-    d.draw_texture_ex(
+    d.draw_texture_pro(
       frame,
-      Vector2{ x: 0., y: 0. },
+      source,
+      Rectangle::new(0., 0., w_f, h_f),
+      Vector2::new(0., 0.),
       0.,
-      match state.config.scale {
-        Some(scale) => scale,
-        None => 1.,
-      },
       Color::WHITE
     );
 

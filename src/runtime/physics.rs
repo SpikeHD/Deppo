@@ -39,16 +39,19 @@ pub fn do_horizontal_checks(state: &mut State, rl: &mut RaylibHandle) {
     return;
   }
 
-  // If the windows is sitting past or on the bottom of the screen, don't move it
+  // At the right edge of the screen
   if desktop_size().0 - rl.get_screen_width() as u32 <= rl.get_window_position().x as u32 {
     // Specifically set the position to be right at the bottom of the screen
-    rl.set_window_position((desktop_size().0 - rl.get_screen_width() as u32) as i32, rl.get_window_position().y as i32);
+    // Make sure this isn't 0 so we don't get stuck
+    rl.set_window_position((desktop_size().0 - rl.get_screen_width() as u32) as i32 - 1, rl.get_window_position().y as i32);
     state.velocity.0 = 0.0;
     return;
   }
 
+  // At the left edge of the screen
   if rl.get_window_position().x <= 0. {
-    rl.set_window_position(0, rl.get_window_position().y as i32);
+    // Make not 0 so we don't get stuck
+    rl.set_window_position(1, rl.get_window_position().y as i32);
     state.velocity.0 = 0.0;
     return;
   }
