@@ -1,5 +1,5 @@
+use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
-use serde::{Serialize, Deserialize};
 
 use crate::animation::AnimationTexture2D;
 
@@ -66,7 +66,7 @@ pub enum MovementState {
   Walk,
   Drag,
   Falling,
-  
+
   // TODO this will probably be used
   #[allow(dead_code)]
   Click,
@@ -103,31 +103,31 @@ impl State {
           self.change_animation();
           self.move_state = MovementState::Idle;
         }
-      },
+      }
       MovementState::Walk => {
         if self.move_state != MovementState::Walk {
           self.change_animation();
           self.move_state = MovementState::Walk;
         }
-      },
+      }
       MovementState::Falling => {
         if self.move_state != MovementState::Falling {
           self.change_animation();
           self.move_state = MovementState::Falling;
         }
-      },
+      }
       MovementState::Drag => {
         if self.move_state != MovementState::Drag {
           self.change_animation();
           self.move_state = MovementState::Drag;
         }
-      },
+      }
       MovementState::Click => {
         if self.move_state != MovementState::Click {
           self.change_animation();
           self.move_state = MovementState::Click;
         }
-      },
+      }
     }
   }
 }
@@ -154,12 +154,71 @@ pub fn load(path: PathBuf) -> State {
   }
 }
 
-pub fn load_all_animations(rl: &mut raylib::prelude::RaylibHandle, thread: &raylib::prelude::RaylibThread, state: &State) -> AnimationListBuffer {
+pub fn load_all_animations(
+  rl: &mut raylib::prelude::RaylibHandle,
+  thread: &raylib::prelude::RaylibThread,
+  state: &State,
+) -> AnimationListBuffer {
   AnimationListBuffer {
-    idle: state.config.animations.idle.as_ref().map(|paths| paths.iter().map(|path| crate::animation::raw_to_texture_2d(rl, thread, &crate::animation::load_gif(state.path.join(path)))).collect()),
-    walk: state.config.animations.walk.as_ref().map(|paths| paths.iter().map(|path| crate::animation::raw_to_texture_2d(rl, thread, &crate::animation::load_gif(state.path.join(path)))).collect()),
-    drag: state.config.animations.drag.as_ref().map(|paths| paths.iter().map(|path| crate::animation::raw_to_texture_2d(rl, thread, &crate::animation::load_gif(state.path.join(path)))).collect()),
-    fall: state.config.animations.fall.as_ref().map(|paths| paths.iter().map(|path| crate::animation::raw_to_texture_2d(rl, thread, &crate::animation::load_gif(state.path.join(path)))).collect()),
-    click: state.config.animations.click.as_ref().map(|paths| paths.iter().map(|path| crate::animation::raw_to_texture_2d(rl, thread, &crate::animation::load_gif(state.path.join(path)))).collect()),
+    idle: state.config.animations.idle.as_ref().map(|paths| {
+      paths
+        .iter()
+        .map(|path| {
+          crate::animation::raw_to_texture_2d(
+            rl,
+            thread,
+            &crate::animation::load_gif(state.path.join(path)),
+          )
+        })
+        .collect()
+    }),
+    walk: state.config.animations.walk.as_ref().map(|paths| {
+      paths
+        .iter()
+        .map(|path| {
+          crate::animation::raw_to_texture_2d(
+            rl,
+            thread,
+            &crate::animation::load_gif(state.path.join(path)),
+          )
+        })
+        .collect()
+    }),
+    drag: state.config.animations.drag.as_ref().map(|paths| {
+      paths
+        .iter()
+        .map(|path| {
+          crate::animation::raw_to_texture_2d(
+            rl,
+            thread,
+            &crate::animation::load_gif(state.path.join(path)),
+          )
+        })
+        .collect()
+    }),
+    fall: state.config.animations.fall.as_ref().map(|paths| {
+      paths
+        .iter()
+        .map(|path| {
+          crate::animation::raw_to_texture_2d(
+            rl,
+            thread,
+            &crate::animation::load_gif(state.path.join(path)),
+          )
+        })
+        .collect()
+    }),
+    click: state.config.animations.click.as_ref().map(|paths| {
+      paths
+        .iter()
+        .map(|path| {
+          crate::animation::raw_to_texture_2d(
+            rl,
+            thread,
+            &crate::animation::load_gif(state.path.join(path)),
+          )
+        })
+        .collect()
+    }),
   }
 }

@@ -9,12 +9,17 @@ pub fn maybe_toggle_walk(state: &mut State) {
   }
 
   // If the current state is neither walk nor idle, don't change it
-  if state.move_state != super::state::MovementState::Walk && state.move_state != super::state::MovementState::Idle {
+  if state.move_state != super::state::MovementState::Walk
+    && state.move_state != super::state::MovementState::Idle
+  {
     return;
   }
 
   let behaviour_change_rarity = state.config.behaviour_change_rarity.unwrap_or(1.);
-  let change = rand::thread_rng().gen_range(0.0..behaviour_change_rarity).round() == 0.0;
+  let change = rand::thread_rng()
+    .gen_range(0.0..behaviour_change_rarity)
+    .round()
+    == 0.0;
 
   if !change {
     return;
