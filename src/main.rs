@@ -15,7 +15,7 @@ fn choose_random_animation(
 fn main() {
   // TODO make configurable
   let mut state = runtime::state::load(std::path::PathBuf::from(
-    "example_animation/slime/slime.json",
+    "critters/slime/slime.json",
   ));
 
   let (mut rl, thread) = raylib::init()
