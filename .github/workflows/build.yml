@@ -71,7 +71,11 @@ jobs:
 
       - name: (Linux ARM) Install dependencies
         if: matrix.config.platform == 'ubuntu-latest' && (matrix.config.target == 'aarch64-unknown-linux-gnu' || matrix.config.target == 'armv7-unknown-linux-gnueabihf')
-        run: sudo apt-get install -y gcc-arm-linux-gnueabihf xorg-dev
+        run: sudo apt-get install -y gcc-arm-linux-gnueabihf
+
+      - name: (Linux) Install dependencies
+        if: matrix.config.platform == 'ubuntu-latest'
+        run: sudo apt-get install -y xorg-dev
 
       - name: Build
         run: cargo build --target ${{ matrix.config.target }} --release
