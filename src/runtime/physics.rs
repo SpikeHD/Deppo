@@ -51,7 +51,6 @@ pub fn do_horizontal_checks(state: &mut State, rl: &mut RaylibHandle) {
     // Make not 0 so we don't get stuck
     rl.set_window_position(1, rl.get_window_position().y as i32);
     state.velocity.0 = 0.0;
-    return;
   }
 }
 
@@ -61,8 +60,8 @@ pub fn do_movement(state: &mut State, rl: &mut RaylibHandle) {
   }
 
   let (x, y) = state.velocity;
-  let new_x = rl.get_window_position().x as f32 - x;
-  let mut new_y = rl.get_window_position().y as f32 - y;
+  let new_x = rl.get_window_position().x - x;
+  let mut new_y = rl.get_window_position().y - y;
 
   // If the windows is sitting past or on the bottom of the screen, move it back up
   if desktop_size().1 - rl.get_screen_height() as u32 <= rl.get_window_position().y as u32 && state.velocity.1 <= 0.0 {

@@ -5,7 +5,7 @@ mod runtime;
 mod util;
 mod window;
 
-fn choose_random_animation<'a>(animations: &'a Vec<animation::AnimationTexture2D>) -> &'a animation::AnimationTexture2D {
+fn choose_random_animation(animations: &[animation::AnimationTexture2D]) -> &animation::AnimationTexture2D {
   let index = rand::random::<usize>() % animations.len();
   &animations[index]
 }
@@ -29,7 +29,7 @@ fn main() {
     std::process::exit(1);
   });
 
-  let mut rl_anim: &animation::AnimationTexture2D = choose_random_animation(&rl_anims);
+  let mut rl_anim: &animation::AnimationTexture2D = choose_random_animation(rl_anims);
   
   let (w, h) = (rl_anim.width as i32, rl_anim.height as i32);
   // used for scaling
@@ -76,8 +76,8 @@ fn main() {
 
       log!("Switching to animation for state {:?}", state.move_state);
 
-      rl_anims = &anims.unwrap();
-      rl_anim = choose_random_animation(&rl_anims);
+      rl_anims = anims.unwrap();
+      rl_anim = choose_random_animation(rl_anims);
     }
 
     let frame = &rl_anim.frames[state.current_frame as usize];

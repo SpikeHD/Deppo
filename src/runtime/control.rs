@@ -7,12 +7,9 @@ pub fn mouse_as_vec2() -> Vector2 {
   let position = Mouse::get_mouse_position();
   let mut current_mouse_pos = Vector2::new(0.0, 0.0);
   
-  match position {
-    Mouse::Position {x, y} => {
-      current_mouse_pos.x = x as f32;
-      current_mouse_pos.y = y as f32;
-    },
-    _ => {}
+  if let Mouse::Position { x, y } = position {
+    current_mouse_pos.x = x as f32;
+    current_mouse_pos.y = y as f32;
   }
 
   current_mouse_pos

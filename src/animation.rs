@@ -1,8 +1,5 @@
 use std::{fs::File, path::PathBuf};
 
-use gif;
-use png;
-
 pub struct Gif {
   pub width: u16,
   pub height: u16,
@@ -64,7 +61,7 @@ pub fn load_gif(path: PathBuf) -> AnimationRaw {
     name: path.file_name().unwrap().to_str().unwrap().to_string(),
     width: frames[0].width,
     height: frames[0].height,
-    frames: frames.iter().map(|f| frame_to_png(f)).collect(),
+    frames: frames.iter().map(frame_to_png).collect(),
     frame_delay: 0,
     current_frame: 0,
     frame_count,
