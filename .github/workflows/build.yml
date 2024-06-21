@@ -4,12 +4,12 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - '.github/workflows/lint.yml'
+      - '.github/workflows/build.yml'
       - 'Cargo.lock'
       - 'src/**'
   pull_request:
     paths:
-      - '.github/workflows/lint.yml'
+      - '.github/workflows/build.yml'
       - 'Cargo.lock'
       - 'src/**'
 
