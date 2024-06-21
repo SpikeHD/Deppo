@@ -1,0 +1,74 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/lint.yml'
+      - 'Cargo.lock'
+      - 'src/**'
+  pull_request:
+    paths:
+      - '.github/workflows/lint.yml'
+      - 'Cargo.lock'
+      - 'src/**'
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+env:
+  CARGO_INCREMENTAL: 0
+
+jobs:
+  build:
+    runs-on: ${{ matrix.config.platform }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - platform: ubuntu-latest
+            target: 'x86_64-unknown-linux-gnu'
+            name: 'Linux x86_64'
+          - platform: ubuntu-latest
+            target: 'aarch64-unknown-linux-gnu'
+            name: 'Linux ARM64'
+          - platform: ubuntu-latest
+            target: 'armv7-unknown-linux-gnueabihf'
+            name: 'Linux ARMv7'
+
+          - platform: macos-latest
+            target: 'x86_64-apple-darwin'
+            name: 'macOS x86_64'
+          - platform: macos-latest
+            target: 'aarch64-apple-darwin'
+            name: 'macOS ARM64'
+
+          - platform: windows-latest
+            target: 'x86_64-pc-windows-msvc'
+            name: 'Windows x86_64'
+          - platform: windows-latest
+            target: 'aarch64-pc-windows-msvc'
+            name: 'Windows ARM64'
+    
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1.8
+
+      - name: Build
+        run: cargo build --target ${{ matrix.config.target }} --release
+
+      - name: (Unix) Upload binary
+        if: matrix.config.platform != 'windows-latest'
+        uses: actions/upload-artifact@v2
+        with:
+          name: Deppo ${{ matrix.config.name }}
+          path: target/${{ matrix.config.target }}/release/deppo
+
+      - name: (Windows) Upload binary
+        if: matrix.config.platform == 'windows-latest'
+        uses: actions/upload-artifact@v2
+        with:
+          name: Deppo ${{ matrix.config.name }}
+          path: target/${{ matrix.config.target }}/release/deppo.exe
