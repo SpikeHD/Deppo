@@ -77,15 +77,27 @@ jobs:
         if: matrix.config.platform == 'ubuntu-latest' && matrix.config.target == 'armv7-unknown-linux-gnueabihf'
         run: sudo apt-get install -y gcc-arm-linux-gnueabihf
 
-      - name: (Linux ARM64) Add compiler to PATH
+      - name: (Linux ARM64) Add C compiler to PATH
         if: matrix.config.platform == 'ubuntu-latest' && matrix.config.target == 'aarch64-unknown-linux-gnu'
         # This must be added to $GITHUB_PATH (see https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#adding-a-system-path)
         run: echo "/usr/bin/aarch64-linux-gnu-gcc" >> $GITHUB_PATH
 
-      - name: (Linux ARMv7) Add compiler to PATH
+      # Also add the C++ compiler
+      - name: (Linux ARM64) Add C++ compiler to PATH
+        if: matrix.config.platform == 'ubuntu-latest' && matrix.config.target == 'aarch64-unknown-linux-gnu'
+        # This must be added to $GITHUB_PATH (see https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#adding-a-system-path)
+        run: echo "/usr/bin/aarch64-linux-gnu-g++" >> $GITHUB_PATH
+
+      - name: (Linux ARMv7) Add C compiler to PATH
         if: matrix.config.platform == 'ubuntu-latest' && matrix.config.target == 'armv7-unknown-linux-gnueabihf'
         # This must be added to $GITHUB_PATH (see https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#adding-a-system-path)
         run: echo "/usr/bin/arm-linux-gnueabihf-gcc" >> $GITHUB_PATH
+
+      # Also add the C++ compiler
+      - name: (Linux ARMv7) Add C++ compiler to PATH
+        if: matrix.config.platform == 'ubuntu-latest' && matrix.config.target == 'armv7-unknown-linux-gnueabihf'
+        # This must be added to $GITHUB_PATH (see https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#adding-a-system-path)
+        run: echo "/usr/bin/arm-linux-gnueabihf-g++" >> $GITHUB_PATH
 
       - name: (Linux) Install dependencies
         if: matrix.config.platform == 'ubuntu-latest'
