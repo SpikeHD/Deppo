@@ -122,6 +122,7 @@ Deppo configurations use typical JSON format. If you are unfamiliar, that's okay
 
 * [ ] Transition animations
 * [ ] Single-file loading (basically just renamed `.zip` files)
+* [ ] "Throwing" with mouse drag
 * [ ] UI for choosing Deppos
 * [ ] Configuration options
 * [ ] Click behaviour
