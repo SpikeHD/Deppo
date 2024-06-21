@@ -68,9 +68,8 @@ fn main() {
         runtime::state::MovementState::Click => animation_list.click.as_ref(),
       };
 
-      // If there is no animation for this state, go back to idle
+      // If there is no animation for this state, just stay at whatever we were at
       if anims.is_none() {
-        state.move_state = runtime::state::MovementState::Idle;
         log!("Failed to load animation for state {:?}. Going back to idle.", state.move_state);
         continue;
       }

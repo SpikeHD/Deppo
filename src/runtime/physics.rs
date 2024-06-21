@@ -7,8 +7,6 @@ static MAX_VELOCITY: f32 = 30.0;
 
 pub fn do_gravity(state: &mut State, rl: &mut RaylibHandle) {
   if state.velocity_frozen
-    || state.config.can_move.is_none()
-    || !state.config.can_move.unwrap()
     || state.config.can_fall.is_none()
     || !state.config.can_fall.unwrap() {
     return;
