@@ -66,6 +66,9 @@ pub enum MovementState {
   Walk,
   Drag,
   Falling,
+  
+  // TODO this will probably be used
+  #[allow(dead_code)]
   Click,
 }
 
@@ -80,16 +83,17 @@ impl State {
     self.velocity = velocity;
   }
 
-  pub fn set_position(&mut self, position: (f32, f32)) {
-    self.position = position;
-  }
+  // pub fn set_position(&mut self, position: (f32, f32)) {
+  //   self.position = position;
+  // }
 
-  pub fn update(&mut self) {
-    if !self.velocity_frozen {
-      self.position.0 += self.velocity.0;
-      self.position.1 += self.velocity.1;
-    }
-  }
+  // TODO this should probably be used over updating directly in the physics functions
+  // pub fn update(&mut self) {
+  //   if !self.velocity_frozen {
+  //     self.position.0 += self.velocity.0;
+  //     self.position.1 += self.velocity.1;
+  //   }
+  // }
 
   pub fn handle_state_change(&mut self, new_state: MovementState) {
     // TODO this wont work properly for now, we need to account for clicks properly

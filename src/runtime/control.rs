@@ -18,7 +18,7 @@ pub fn mouse_as_vec2() -> Vector2 {
   current_mouse_pos
 }
 
-pub fn handle_mouse(rl: &mut RaylibHandle, state: &mut State, width: i32, height: i32) {
+pub fn handle_mouse(rl: &mut RaylibHandle, state: &mut State, width: i32, _height: i32) {
   if state.config.can_drag.is_none() || !state.config.can_drag.unwrap() {
     return;
   }

@@ -30,7 +30,7 @@ pub fn maybe_toggle_walk(state: &mut State) {
 
   // If new state is Walk, set the horizontal velocity to the move speed, multiplied by a random direction
   if new_state == super::state::MovementState::Walk {
-    let walk_direction = walk_direction_sign(state);
+    let walk_direction = walk_direction_sign();
     state.set_velocity((state.config.move_speed.unwrap_or(0.) * walk_direction, 0.));
 
     // Change flip_x based on direction
@@ -45,7 +45,7 @@ pub fn maybe_toggle_walk(state: &mut State) {
   state.handle_state_change(new_state);
 }
 
-pub fn walk_direction_sign(state: &State) -> f32 {
+pub fn walk_direction_sign() -> f32 {
   // small helper to return -1 or 1 randomly
   (rand::thread_rng().gen_range(0..2) * 2 - 1) as f32
 }
