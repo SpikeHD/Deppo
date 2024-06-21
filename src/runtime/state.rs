@@ -44,9 +44,9 @@ pub struct State {
   pub config: StateConfig,
 
   pub move_state: MovementState,
+  pub move_state_changed: bool,
 
   pub current_frame: u32,
-  pub current_animation: String,
 
   pub velocity_frozen: bool,
   pub velocity: (f32, f32),
@@ -63,8 +63,9 @@ pub enum MovementState {
 }
 
 impl State {
-  pub fn change_animation(&mut self, animation: &str) {
-    self.current_animation = animation.to_string();
+  pub fn change_animation(&mut self) {
+    // TODO will probably be used for handling transitions and such
+    self.move_state_changed = true;
     self.current_frame = 0;
   }
 
@@ -88,31 +89,31 @@ impl State {
     match new_state {
       MovementState::Idle => {
         if self.move_state != MovementState::Idle {
-          self.change_animation("idle");
+          self.change_animation();
           self.move_state = MovementState::Idle;
         }
       },
       MovementState::Walk => {
         if self.move_state != MovementState::Walk {
-          self.change_animation("walk");
+          self.change_animation();
           self.move_state = MovementState::Walk;
         }
       },
       MovementState::Falling => {
         if self.move_state != MovementState::Falling {
-          self.change_animation("falling");
+          self.change_animation();
           self.move_state = MovementState::Falling;
         }
       },
       MovementState::Drag => {
         if self.move_state != MovementState::Drag {
-          self.change_animation("drag");
+          self.change_animation();
           self.move_state = MovementState::Drag;
         }
       },
       MovementState::Click => {
         if self.move_state != MovementState::Click {
-          self.change_animation("click");
+          self.change_animation();
           self.move_state = MovementState::Click;
         }
       },
@@ -128,9 +129,10 @@ pub fn load(path: PathBuf) -> State {
     name: path.file_name().unwrap().to_str().unwrap().to_string(),
     path: path.parent().unwrap().to_path_buf(),
     move_state: MovementState::Idle,
+    // This will ensure an animation is loaded right when we start
+    move_state_changed: true,
     config,
     current_frame: 0,
-    current_animation: "idle".to_string(),
     velocity_frozen: false,
     velocity: (0., 0.),
     position: (0., 0.),
