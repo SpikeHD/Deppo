@@ -8,6 +8,7 @@ pub struct AnimationList {
   pub idle: Option<Vec<String>>,
   pub walk: Option<Vec<String>>,
   pub drag: Option<Vec<String>>,
+  pub fall: Option<Vec<String>>,
   pub click: Option<Vec<String>>,
 }
 
@@ -15,6 +16,7 @@ pub struct AnimationListBuffer {
   pub idle: Option<Vec<AnimationTexture2D>>,
   pub walk: Option<Vec<AnimationTexture2D>>,
   pub drag: Option<Vec<AnimationTexture2D>>,
+  pub fall: Option<Vec<AnimationTexture2D>>,
   pub click: Option<Vec<AnimationTexture2D>>,
 }
 
@@ -51,11 +53,12 @@ pub struct State {
   pub position: (f32, f32),
 }
 
-#[derive(PartialEq)]
+#[derive(Debug, PartialEq)]
 pub enum MovementState {
   Idle,
   Walk,
   Drag,
+  Falling,
   Click,
 }
 
@@ -93,6 +96,12 @@ impl State {
         if self.move_state != MovementState::Walk {
           self.change_animation("walk");
           self.move_state = MovementState::Walk;
+        }
+      },
+      MovementState::Falling => {
+        if self.move_state != MovementState::Falling {
+          self.change_animation("falling");
+          self.move_state = MovementState::Falling;
         }
       },
       MovementState::Drag => {
@@ -139,6 +148,10 @@ pub fn load_all_animations(rl: &mut raylib::prelude::RaylibHandle, thread: &rayl
       None => None,
     },
     drag: match &state.config.animations.drag {
+      Some(paths) => Some(paths.iter().map(|path| crate::animation::raw_to_texture_2d(rl, thread, &crate::animation::load_gif(state.path.join(path)))).collect()),
+      None => None,
+    },
+    fall: match &state.config.animations.fall {
       Some(paths) => Some(paths.iter().map(|path| crate::animation::raw_to_texture_2d(rl, thread, &crate::animation::load_gif(state.path.join(path)))).collect()),
       None => None,
     },

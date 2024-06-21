@@ -9,7 +9,6 @@
   "can_fall": true,
 
   "animations": {
-    "idle": ["test.gif"],
-    "drag": ["test.gif"]
+    "idle": ["test.gif"]
   }
 }

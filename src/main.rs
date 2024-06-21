@@ -13,6 +13,8 @@ fn main() {
     .undecorated()
     .build();
 
+  // TODO this doesn't work but I would like it to!!
+  //rl.get_window_state().set_window_topmost(true);
   let animation_list = runtime::state::load_all_animations(&mut rl, &thread, &state);
   // TODO don't unwrap
   let rl_anims = &animation_list.idle.unwrap();
@@ -55,6 +57,15 @@ fn main() {
         Some(scale) => scale,
         None => 1.,
       },
+      Color::WHITE
+    );
+
+    // Draw text that says the current move state
+    d.draw_text(
+      &format!("{:?}", state.move_state),
+      10,
+      10,
+      20,
       Color::WHITE
     );
 

@@ -25,7 +25,12 @@ pub fn do_gravity(state: &mut State, rl: &mut RaylibHandle) {
   if desktop_size().1 - rl.get_screen_height() as u32 <= rl.get_window_position().y as u32 && state.velocity.1 <= 0.0 {
     // Esnure we don't fall farther than the bottom of the screen
     state.velocity.1 = 0.0;
-    return;
+  }
+
+  if state.velocity.1 != 0.0 {
+    state.handle_state_change(super::state::MovementState::Falling);
+  } else {
+    state.handle_state_change(super::state::MovementState::Idle);
   }
 }
 
