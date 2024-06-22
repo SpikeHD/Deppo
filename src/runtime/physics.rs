@@ -3,7 +3,7 @@ use raylib::RaylibHandle;
 use super::super::window::platform::desktop_size;
 use super::state::State;
 
-static MAX_VELOCITY: f32 = 30.0;
+pub static MAX_VELOCITY: f32 = 30.0;
 
 pub fn do_gravity(state: &mut State, rl: &mut RaylibHandle) {
   if state.velocity_frozen || state.config.can_fall.is_none() || !state.config.can_fall.unwrap() {
@@ -34,8 +34,6 @@ pub fn do_gravity(state: &mut State, rl: &mut RaylibHandle) {
 
   if state.velocity.1 != 0.0 {
     state.handle_state_change(super::state::MovementState::Falling);
-  } else if state.move_state == super::state::MovementState::Falling {
-    state.handle_state_change(super::state::MovementState::Idle);
   }
 }
 

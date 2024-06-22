@@ -1,6 +1,8 @@
 use mouse_position::mouse_position::Mouse;
 use raylib::prelude::*;
 
+use crate::runtime::physics::MAX_VELOCITY;
+
 use super::state::State;
 
 pub fn mouse_as_vec2() -> Vector2 {
@@ -28,6 +30,9 @@ pub fn handle_mouse(rl: &mut RaylibHandle, state: &mut State, width: i32, _heigh
       state.velocity = (0.0, 0.0);
     }
 
+    // Set state mouse positions
+    state.mouse_position = ((current_mouse_pos.x, current_mouse_pos.y), state.mouse_position.0);
+
     // Ignore if mouse pos is negative
     if current_mouse_pos.x > 0.0 || current_mouse_pos.y > 0.0 {
       // Move the window
@@ -39,5 +44,16 @@ pub fn handle_mouse(rl: &mut RaylibHandle, state: &mut State, width: i32, _heigh
     }
   } else if state.velocity_frozen {
     state.velocity_frozen = false;
+    
+    // Set the velocity to whatever the velocity is based on the current and last mouse position
+    let velocity = (
+      (state.mouse_position.0.0 - current_mouse_pos.x).clamp(-MAX_VELOCITY, MAX_VELOCITY),
+      (state.mouse_position.0.1 - current_mouse_pos.y).clamp(-MAX_VELOCITY, MAX_VELOCITY),
+    );
+
+    state.set_velocity(velocity);
+
+    // Set mouse positions to 0. We don't need to track this all the time!
+    state.mouse_position = ((0.0, 0.0), (0.0, 0.0));
   }
 }

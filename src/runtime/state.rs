@@ -58,6 +58,9 @@ pub struct State {
   pub velocity_frozen: bool,
   pub velocity: (f32, f32),
   pub position: (f32, f32),
+
+  // tuple is (current, last)
+  pub mouse_position: ((f32, f32), (f32, f32)),
 }
 
 #[derive(Debug, PartialEq, Clone)]
@@ -179,6 +182,8 @@ pub fn load_from_file(path: PathBuf) -> Result<State, std::io::Error> {
     velocity_frozen: false,
     velocity: (0., 0.),
     position: (0., 0.),
+
+    mouse_position: ((0., 0.), (0., 0.)),
   })
 }
 
@@ -218,6 +223,8 @@ pub fn load_from_zip(zip: PathBuf) -> Result<State, std::io::Error> {
     velocity_frozen: false,
     velocity: (0., 0.),
     position: (0., 0.),
+
+    mouse_position: ((0., 0.), (0., 0.)),
   })
 }
 
