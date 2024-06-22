@@ -15,6 +15,7 @@ png = "0.17.13"
 rand = "0.8.5"
 raylib = "5.0.1"
 serde = { version = "1.0.203", features = ["derive"] }
+serde-inline-default = "0.2.0"
 serde_json = "1.0.117"
 zip = "2.1.3"
 

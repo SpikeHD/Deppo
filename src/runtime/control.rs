@@ -1,9 +1,7 @@
 use mouse_position::mouse_position::Mouse;
 use raylib::prelude::*;
 
-use crate::runtime::physics::MAX_VELOCITY;
-
-use super::state::State;
+use super::{physics::DEFAULT_MAX_VELOCITY, state::State};
 
 pub fn mouse_as_vec2() -> Vector2 {
   let position = Mouse::get_mouse_position();
@@ -43,12 +41,14 @@ pub fn handle_mouse(rl: &mut RaylibHandle, state: &mut State, width: i32, _heigh
       state.handle_state_change(super::state::MovementState::Drag);
     }
   } else if state.velocity_frozen {
+    let max_vel = state.config.physics.max_velocity.unwrap_or(DEFAULT_MAX_VELOCITY);
+
     state.velocity_frozen = false;
     
     // Set the velocity to whatever the velocity is based on the current and last mouse position
     let velocity = (
-      (state.mouse_position.0.0 - current_mouse_pos.x).clamp(-MAX_VELOCITY, MAX_VELOCITY),
-      (state.mouse_position.0.1 - current_mouse_pos.y).clamp(-MAX_VELOCITY, MAX_VELOCITY),
+      (state.mouse_position.0.0 - current_mouse_pos.x).clamp(-max_vel, max_vel),
+      (state.mouse_position.0.1 - current_mouse_pos.y).clamp(-max_vel, max_vel),
     );
 
     state.set_velocity(velocity);

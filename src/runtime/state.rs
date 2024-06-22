@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use serde_inline_default::serde_inline_default;
 use std::{fs::File, io::Read, path::PathBuf};
 
 use crate::{animation::AnimationTexture2D, log};
@@ -20,13 +21,27 @@ pub struct AnimationListBuffer {
   pub click: Option<Vec<AnimationTexture2D>>,
 }
 
+#[serde_inline_default]
+#[derive(Serialize, Deserialize, Default)]
+pub struct PhysicsConfig {
+  #[serde_inline_default(Some(40.))]
+  pub max_velocity: Option<f32>, // something like 30 or 40 makes sense
+  #[serde_inline_default(Some(0.9))]
+  pub friction: Option<f32>, // 0.9 is usually a fair number
+}
+
+#[serde_inline_default]
 #[derive(Serialize, Deserialize)]
 pub struct StateConfig {
   pub name: String,
+  #[serde_inline_default(30)]
   pub fps: u32,
   // TODO used for - for example - running a 15fps animation at 30fps, but retaining the speed
+  #[serde_inline_default(Some(1.))]
   pub timescale: Option<f32>,
+  #[serde_inline_default(Some(1.))]
   pub scale: Option<f32>,
+  #[serde_inline_default(Some(40.))]
   pub behaviour_change_rarity: Option<f32>,
 
   pub can_move: Option<bool>,
@@ -38,6 +53,9 @@ pub struct StateConfig {
   // eg. change to max_speed and also add a speed_can_be_variable flag
   // and slow down the animation based on speed
   pub move_speed: Option<f32>,
+
+  #[serde_inline_default(PhysicsConfig::default())]
+  pub physics: PhysicsConfig,
 
   pub animations: AnimationList,
 }

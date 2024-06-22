@@ -3,22 +3,24 @@ use raylib::RaylibHandle;
 use super::super::window::platform::desktop_size;
 use super::state::State;
 
-pub static MAX_VELOCITY: f32 = 30.0;
+pub static DEFAULT_MAX_VELOCITY: f32 = 30.0;
 
 pub fn do_gravity(state: &mut State, rl: &mut RaylibHandle) {
   if state.velocity_frozen || state.config.can_fall.is_none() || !state.config.can_fall.unwrap() {
     return;
   }
 
+  let max_vel = state.config.physics.max_velocity.unwrap_or(DEFAULT_MAX_VELOCITY);
+
   // Limit Y velocity
-  if state.velocity.1.abs() > MAX_VELOCITY {
+  if state.velocity.1.abs() > max_vel {
     state.velocity.1 = if state.velocity.1 > 0.0 {
-      MAX_VELOCITY
+      max_vel
     } else {
-      -MAX_VELOCITY
+      -max_vel
     };
   } else {
-    state.velocity.1 -= 1.0;
+    state.velocity.1 -= 2.0;
   }
 
   // If the windows is sitting past or on the bottom of the screen, don't move it
