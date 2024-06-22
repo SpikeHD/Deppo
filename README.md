@@ -27,6 +27,9 @@
 * [What is Deppo?](#what-is-deppo)
 * [Quickstart](#quickstart)
 * [Make your own!](#make-your-own)
+* [Building](#building)
+  * [Requirements](#requirements)
+  * [Steps](#steps)
 * [TODO](#todo)
 * [Contributing](#contributing)
 
@@ -48,13 +51,25 @@ TODO
 
 You can find a comprehesive guide and reference for creating your own Deppo in the [CREATING.md](CREATING.md) file.
 
+# Building
+
+## Requirements
+
+* [Rust and Cargo](https://www.rust-lang.org/tools/install)
+
+## Steps
+
+1. Clone the repository
+2. Run `cargo build --release`
+3. The built binary will be in `target/release`
+
 # TODO
 
 * [ ] Transition animations
 * [x] Single-file loading (basically just renamed `.zip` files)
 * [x] "Throwing" with mouse drag
-* [ ] UI for choosing Deppos
-* [ ] Configuration options
+* [x] UI for choosing Deppos
+* [x] Configuration options
 * [ ] Click behaviour
 * [ ] ARM Linux support
 * [ ] Example Deppos
