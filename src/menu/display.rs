@@ -22,7 +22,8 @@ pub fn draw_gui(d: &mut RaylibDrawHandle) {
       0.,
       0.,
       width,
-      20.),
+      20.
+    ),
     Some(i_text.as_c_str()),
   ) {
     open::that(
