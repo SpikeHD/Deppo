@@ -141,26 +141,32 @@ pub fn load(path: PathBuf) -> State {
     if json_path.exists() {
       load_from_file(json_path).unwrap()
     } else {
-      log!("No deppo.json found in directory. Exiting.");
+      log!("No deppo.json found in directory.");
       std::process::exit(1);
     }
   } else {
     // If the file is a zip, load from zip,otherwise load from file
     if path.extension().unwrap_or_default() == "zip" {
-      load_from_zip(path).unwrap()
+      load_from_zip(path).unwrap_or_else(|e| {
+        log!("Failed to load zip: {}", e);
+        std::process::exit(1);
+      })
     } else {
-      load_from_file(path).unwrap()
+      load_from_file(path).unwrap_or_else(|e| {
+        log!("Failed to load file: {}", e);
+        std::process::exit(1);
+      })
     }
   }
 }
 
 pub fn load_from_file(path: PathBuf) -> Result<State, std::io::Error> {
-  let file = std::fs::read_to_string(&path).unwrap();
-  let config: StateConfig = serde_json::from_str(&file).unwrap();
+  let file = std::fs::read_to_string(&path)?;
+  let config: StateConfig = serde_json::from_str(&file)?;
 
   Ok(State {
     name: config.name.clone(),
-    path: path.parent().unwrap().to_path_buf(),
+    path: path.parent().unwrap_or(&path).to_path_buf(),
 
     move_state: MovementState::Idle,
     move_state_changed: true,
@@ -177,8 +183,8 @@ pub fn load_from_file(path: PathBuf) -> Result<State, std::io::Error> {
 }
 
 pub fn load_from_zip(zip: PathBuf) -> Result<State, std::io::Error> {
-  let file = File::open(&zip).unwrap();
-  let mut archive = zip::ZipArchive::new(file).unwrap();
+  let file = File::open(&zip)?;
+  let mut archive = zip::ZipArchive::new(file)?;
 
   // Find deppo.json
   let mut config = String::new();
