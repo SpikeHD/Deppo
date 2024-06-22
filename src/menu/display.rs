@@ -1,10 +1,10 @@
-use std::ffi::{CStr, CString};
+use std::{ffi::{CStr, CString}, path::PathBuf};
 
 use raylib::{
   drawing::RaylibDrawHandle, ffi::GuiIconName, math::Rectangle, rgui::RaylibDrawGui, rstr, RaylibHandle
 };
 
-use crate::{log, util::paths::deppo_path};
+use crate::{log, util::{deppos::{self, list_deppos}, paths::deppo_path}};
 
 use super::{color::rgba_to_int32, runtime::state::State, styles};
 
@@ -85,4 +85,45 @@ pub fn draw_gui(state: &mut State, d: &mut RaylibDrawHandle) {
     Some(rstr!("Third Option")),
     &mut state.config.open_on_startup
   );
+
+  // "Switch Deppo" label
+  d.gui_label(
+    Rectangle::new(
+      0.,
+      t_y + t_height + 10.,
+      width / 2.,
+      20.
+    ),
+    Some(rstr!("Switch Deppo"))
+  );
+
+  // Loop through all Deppos, draw a button for each
+  let mut y = t_y + t_height + 30.;
+
+  for deppo in list_deppos() {
+    let deppo = deppos::load_deppo(&deppo_path().join(&deppo));
+
+    let mut text = deppo.name.clone();
+    
+    if let Some(author) = deppo.author {
+      text.push_str(" by ");
+      text.push_str(&author);
+    }
+
+    let text = CString::new(text).unwrap();
+
+    if d.gui_button(
+      Rectangle::new(
+        0.,
+        y,
+        width,
+        40.
+      ),
+      Some(text.as_c_str())
+    ) {
+      log!("Switching to Deppo: {:?}", deppo.name);
+    }
+
+    y += 50.;
+  }
 }

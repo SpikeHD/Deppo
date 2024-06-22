@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use serde_inline_default::serde_inline_default;
 use std::{fs::File, io::Read, path::PathBuf};
 
-use crate::{animation::AnimationTexture2D, log};
+use crate::{animation::AnimationTexture2D, log, util::deppos};
 
 #[derive(Serialize, Deserialize)]
 pub struct AnimationList {
@@ -34,6 +34,7 @@ pub struct PhysicsConfig {
 #[derive(Serialize, Deserialize)]
 pub struct StateConfig {
   pub name: String,
+  pub author: Option<String>,
   #[serde_inline_default(30)]
   pub fps: u32,
   // TODO used for - for example - running a 15fps animation at 30fps, but retaining the speed
@@ -174,9 +175,9 @@ pub fn load(path: PathBuf) -> State {
     }
   } else {
     // If the file is a zip, load from zip,otherwise load from file
-    if path.extension().unwrap_or_default() == "zip" {
+    if path.extension().unwrap_or_default() == "zip" || path.extension().unwrap_or_default() == "deppo" {
       load_from_zip(path).unwrap_or_else(|e| {
-        log!("Failed to load zip: {}", e);
+        log!("Failed to load archive: {}", e);
         std::process::exit(1);
       })
     } else {
@@ -189,9 +190,8 @@ pub fn load(path: PathBuf) -> State {
 }
 
 pub fn load_from_file(path: PathBuf) -> Result<State, std::io::Error> {
-  let file = std::fs::read_to_string(&path)?;
-  let config: StateConfig = serde_json::from_str(&file)?;
-
+  let config = deppos::load_from_file(&path)?;
+  
   Ok(State {
     name: config.name.clone(),
     path: path.parent().unwrap_or(&path).to_path_buf(),
@@ -215,25 +215,7 @@ pub fn load_from_file(path: PathBuf) -> Result<State, std::io::Error> {
 }
 
 pub fn load_from_zip(zip: PathBuf) -> Result<State, std::io::Error> {
-  let file = File::open(&zip)?;
-  let mut archive = zip::ZipArchive::new(file)?;
-
-  // Find deppo.json
-  let mut config = String::new();
-
-  match archive.by_name("deppo.json") {
-    Ok(mut file) => {
-      file.read_to_string(&mut config)?;
-    }
-    Err(_) => {
-      return Err(std::io::Error::new(
-        std::io::ErrorKind::NotFound,
-        "deppo.json not found in zip",
-      ));
-    }
-  };
-
-  let config: StateConfig = serde_json::from_str(&config)?;
+  let config: StateConfig = deppos::load_from_zip(&zip)?;
 
   Ok(State {
     name: config.name.clone(),
