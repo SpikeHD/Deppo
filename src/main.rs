@@ -1,6 +1,7 @@
 use raylib::prelude::*;
 
 mod animation;
+mod menu;
 mod runtime;
 mod util;
 mod window;
@@ -54,6 +55,7 @@ fn main() {
 
     // Handlers
     runtime::control::handle_mouse(&mut rl, &mut state, w_final, h_final);
+    runtime::control::maybe_open_menu(&mut rl, &mut state);
 
     // Do window-based physics
     runtime::physics::do_gravity(&mut state, &mut rl);
@@ -105,6 +107,7 @@ fn main() {
       },
     );
 
+
     let mut d = rl.begin_drawing(&thread);
 
     d.clear_background(Color::BLANK);
@@ -118,7 +121,14 @@ fn main() {
     );
 
     // Draw text that says the current move state
-    d.draw_text(&format!("{:?}", state.move_state), 10, 10, 20, Color::WHITE);
+    // d.draw_text(&format!("{:?}", state.move_state), 10, 10, 20, Color::WHITE);
+
+    if state.menu_open {
+      d.gui_enable();
+      menu::display::draw_gui(&mut d);
+    } else {
+      d.gui_disable();
+    }
 
     state.current_frame += 1;
     if state.current_frame >= rl_anim.frame_count {

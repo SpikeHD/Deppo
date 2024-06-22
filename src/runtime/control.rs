@@ -16,7 +16,7 @@ pub fn mouse_as_vec2() -> Vector2 {
 }
 
 pub fn handle_mouse(rl: &mut RaylibHandle, state: &mut State, width: i32, _height: i32) {
-  if state.config.can_drag.is_none() || !state.config.can_drag.unwrap() {
+  if state.config.can_drag.is_none() || !state.config.can_drag.unwrap() || state.menu_open {
     return;
   }
 
@@ -62,5 +62,16 @@ pub fn handle_mouse(rl: &mut RaylibHandle, state: &mut State, width: i32, _heigh
 
     // Set mouse positions to 0. We don't need to track this all the time!
     state.mouse_position = ((0.0, 0.0), (0.0, 0.0));
+  }
+}
+
+pub fn maybe_open_menu(rl: &mut RaylibHandle, state: &mut State) {
+  // If we right-clicked
+  if rl.is_key_down(KeyboardKey::KEY_Z) {
+    state.menu_open = true;
+  }
+
+  if rl.is_key_down(KeyboardKey::KEY_X) {
+    state.menu_open = false;
   }
 }
