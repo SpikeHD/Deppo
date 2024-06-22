@@ -6,13 +6,36 @@ use std::{
 use crate::log;
 use super::config;
 
+pub fn is_portable() -> bool {
+  match std::env::current_exe().unwrap_or_default().parent() {
+    Some(parent) => {
+      // Check if parent contains .port file
+      parent.join(".port").exists()
+    },
+    None => {
+      log!("Error getting current exe parent");
+      false
+    }
+  }
+}
+
 pub fn config_dir() -> PathBuf {
   // First check for a local config file
   let current_exe = std::env::current_exe().unwrap_or_default();
   let local_config_dir = current_exe.parent().unwrap().join("config.json");
 
-  if fs::metadata(&local_config_dir).is_ok() {
+  if is_portable() {
     log!("Using local config file");
+
+    // create if needed
+    if fs::metadata(&local_config_dir).is_err() {
+      fs::write(
+        &local_config_dir,
+        serde_json::to_string(&config::default_config()).unwrap_or("{}".to_string()),
+      )
+      .unwrap_or(());
+    }
+
     return local_config_dir;
   }
 
@@ -45,8 +68,13 @@ pub fn deppo_path() -> PathBuf {
   let current_exe = std::env::current_exe().unwrap_or_default();
   let local_dir = current_exe.parent().unwrap().join("deppos");
 
-  if fs::metadata(&local_dir).is_ok() {
+  if is_portable() {
     log!("Using local Deppo dir");
+    // create if needed
+    if fs::metadata(&local_dir).is_err() {
+      fs::create_dir_all(&local_dir).expect("Error creating deppo dir");
+    }
+
     return local_dir;
   }
 

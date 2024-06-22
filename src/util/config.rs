@@ -45,3 +45,9 @@ pub fn get_config() -> Configuration {
     }
   }
 }
+
+pub fn save_config(config: Configuration) {
+  let config_str = serde_json::to_string(&config).unwrap();
+
+  write_config_file(config_str);
+}

@@ -1,6 +1,6 @@
 use raylib::ffi::TraceLogLevel;
 
-use crate::util::config::get_config;
+use crate::util::config::{get_config, save_config, write_config_file};
 
 mod color;
 mod display;
@@ -26,4 +26,7 @@ pub fn run() {
 
     display::draw_gui(&mut state, &mut d);
   }
+
+  // Save the config after menu is closed
+  save_config(state.config);
 }

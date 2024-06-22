@@ -100,12 +100,10 @@ pub fn draw_gui(state: &mut State, d: &mut RaylibDrawHandle) {
   // Loop through all Deppos, draw a button for each
   let mut y = t_y + t_height + 30.;
 
-  for deppo in list_deppos() {
-    let deppo = deppos::load_deppo(&deppo_path().join(&deppo));
-
+  for deppo in &state.deppo_list {
     let mut text = deppo.name.clone();
     
-    if let Some(author) = deppo.author {
+    if let Some(author) = &deppo.author {
       text.push_str(" by ");
       text.push_str(&author);
     }
@@ -122,6 +120,7 @@ pub fn draw_gui(state: &mut State, d: &mut RaylibDrawHandle) {
       Some(text.as_c_str())
     ) {
       log!("Switching to Deppo: {:?}", deppo.name);
+      state.config.deppo = deppo.name.clone();
     }
 
     y += 50.;
