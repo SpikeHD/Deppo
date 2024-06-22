@@ -29,7 +29,9 @@ pub fn do_gravity(state: &mut State, rl: &mut RaylibHandle) {
     state.velocity.1 = 0.0;
 
     // Also make sure our state is proper
-    state.handle_state_change(super::state::MovementState::Idle);
+    if !state.is_ground_state() {
+      state.handle_state_change(super::state::MovementState::Idle);
+    }
   }
 
   if state.velocity.1 != 0.0 {
@@ -79,4 +81,20 @@ pub fn do_movement(state: &mut State, rl: &mut RaylibHandle) {
   }
 
   rl.set_window_position(new_x as i32, new_y as i32);
+}
+
+// Basically, if the creature is on the ground and has a high velocity and not in Moving state, we should slow it down
+pub fn handle_friction(state: &mut State) {
+  if state.velocity_frozen || state.move_state == super::state::MovementState::Walk {
+    return;
+  }
+
+  if state.velocity.1 == 0.0 && state.velocity.0.abs() > 0.0 {
+    state.velocity.0 = state.velocity.0 * 0.9;
+  }
+
+  // If low enough, just set to 0
+  if state.velocity.0.abs() < 0.1 {
+    state.velocity.0 = 0.0;
+  }
 }

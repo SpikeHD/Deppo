@@ -61,6 +61,7 @@ fn main() {
     runtime::physics::do_gravity(&mut state, &mut rl);
     runtime::physics::do_horizontal_checks(&mut state, &mut rl);
     runtime::physics::do_movement(&mut state, &mut rl);
+    runtime::physics::handle_friction(&mut state);
 
     // Set animation if move_state_changed is true
     if state.move_state_changed {

@@ -86,6 +86,10 @@ impl State {
     self.velocity = velocity;
   }
 
+  pub fn is_ground_state(&self) -> bool {
+    self.move_state == MovementState::Idle || self.move_state == MovementState::Walk
+  }
+
   // pub fn set_position(&mut self, position: (f32, f32)) {
   //   self.position = position;
   // }

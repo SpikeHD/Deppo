@@ -9,9 +9,7 @@ pub fn maybe_toggle_walk(state: &mut State) {
   }
 
   // If the current state is neither walk nor idle, don't change it
-  if state.move_state != super::state::MovementState::Walk
-    && state.move_state != super::state::MovementState::Idle
-  {
+  if !state.is_ground_state() {
     return;
   }
 
