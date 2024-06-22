@@ -80,7 +80,8 @@ pub struct State {
   // tuple is (current, last)
   pub mouse_position: ((f32, f32), (f32, f32)),
 
-  pub menu_open: bool,
+  // For opening/closing the menu
+  pub menu_process_handle: Option<std::process::Child>,
 }
 
 #[derive(Debug, PartialEq, Clone)]
@@ -208,7 +209,8 @@ pub fn load_from_file(path: PathBuf) -> Result<State, std::io::Error> {
     position: (0., 0.),
 
     mouse_position: ((0., 0.), (0., 0.)),
-    menu_open: false,
+
+    menu_process_handle: None,
   })
 }
 
@@ -250,7 +252,8 @@ pub fn load_from_zip(zip: PathBuf) -> Result<State, std::io::Error> {
     position: (0., 0.),
 
     mouse_position: ((0., 0.), (0., 0.)),
-    menu_open: false,
+
+    menu_process_handle: None,
   })
 }
 

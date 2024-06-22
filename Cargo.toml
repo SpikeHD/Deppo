@@ -5,7 +5,7 @@ edition = "2021"
 
 [profile.release]
 lto = true
-strip = "debuginfo"
+#strip = "debuginfo"
 
 [dependencies]
 chrono = "0.4.38"

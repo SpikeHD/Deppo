@@ -96,7 +96,7 @@ pub fn handle_friction(state: &mut State) {
   }
 
   if state.velocity.1 == 0.0 && state.velocity.0.abs() > 0.0 {
-    state.velocity.0 *= 0.9;
+    state.velocity.0 *= state.config.physics.friction.unwrap_or(0.8);
   }
 
   // If low enough, just set to 0

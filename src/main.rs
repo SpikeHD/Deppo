@@ -1,4 +1,5 @@
 use raylib::prelude::*;
+use util::{args::has_arg, deppos::{get_current_deppo_file, list_deppos}};
 
 mod animation;
 mod menu;
@@ -13,9 +14,23 @@ fn choose_random_animation(
   &animations[index]
 }
 
+fn child_is_alive(child: &mut std::process::Child) -> bool {
+  match child.try_wait() {
+    Ok(Some(_)) => false,
+    Ok(None) => true,
+    Err(_) => false,
+  }
+}
+
 fn main() {
+  // Opening in menu mode
+  if util::args::menu() || list_deppos().len() == 0 {
+    menu::run();
+    return;
+  }
+
   // TODO make configurable
-  let mut state = runtime::state::load(std::path::PathBuf::from("critters/slime.zip"));
+  let mut state = runtime::state::load(get_current_deppo_file());
 
   let (mut rl, thread) = raylib::init()
     .title("Deppo")
@@ -55,7 +70,24 @@ fn main() {
 
     // Handlers
     runtime::control::handle_mouse(&mut rl, &mut state, w_final, h_final);
-    runtime::control::maybe_open_menu(&mut rl, &mut state);
+
+    // Handle opening menu
+    if runtime::control::maybe_open_menu(&mut rl) && (state.menu_process_handle.is_none() || !child_is_alive(state.menu_process_handle.as_mut().unwrap())) {
+      // Spawn ourselves, but with the -menu flag
+      let mut cmd = std::process::Command::new(std::env::current_exe().unwrap());
+      cmd.arg("-menu");
+
+      if has_arg("debug") {
+        cmd.arg("-debug");
+      }
+
+      let handle = cmd.spawn().unwrap();
+      state.menu_process_handle = Some(handle);
+    }
+
+    if runtime::control::maybe_should_quit(&mut rl) {
+      break;
+    }
 
     // Do window-based physics
     runtime::physics::do_gravity(&mut state, &mut rl);
@@ -122,13 +154,6 @@ fn main() {
 
     // Draw text that says the current move state
     // d.draw_text(&format!("{:?}", state.move_state), 10, 10, 20, Color::WHITE);
-
-    if state.menu_open {
-      d.gui_enable();
-      menu::display::draw_gui(&mut d);
-    } else {
-      d.gui_disable();
-    }
 
     state.current_frame += 1;
     if state.current_frame >= rl_anim.frame_count {
