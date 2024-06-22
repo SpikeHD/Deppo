@@ -51,8 +51,8 @@ You can find a comprehesive guide and reference for creating your own Deppo in t
 # TODO
 
 * [ ] Transition animations
-* [ ] Single-file loading (basically just renamed `.zip` files)
-* [ ] "Throwing" with mouse drag
+* [x] Single-file loading (basically just renamed `.zip` files)
+* [x] "Throwing" with mouse drag
 * [ ] UI for choosing Deppos
 * [ ] Configuration options
 * [ ] Click behaviour
