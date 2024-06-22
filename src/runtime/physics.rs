@@ -10,7 +10,7 @@ pub fn do_gravity(state: &mut State, rl: &mut RaylibHandle) {
     return;
   }
 
-  // Limit Y velocity to 10 pixels per frame
+  // Limit Y velocity
   if state.velocity.1.abs() > MAX_VELOCITY {
     state.velocity.1 = if state.velocity.1 > 0.0 {
       MAX_VELOCITY
@@ -25,8 +25,11 @@ pub fn do_gravity(state: &mut State, rl: &mut RaylibHandle) {
   if desktop_size().1 - rl.get_screen_height() as u32 <= rl.get_window_position().y as u32
     && state.velocity.1 <= 0.0
   {
-    // Esnure we don't fall farther than the bottom of the screen
+    // Ensure we don't fall farther than the bottom of the screen
     state.velocity.1 = 0.0;
+
+    // Also make sure our state is proper
+    state.handle_state_change(super::state::MovementState::Idle);
   }
 
   if state.velocity.1 != 0.0 {
