@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
-use std::path::PathBuf;
+use std::{fs::File, io::Read, path::PathBuf};
 
-use crate::animation::AnimationTexture2D;
+use crate::{animation::AnimationTexture2D, log};
 
 #[derive(Serialize, Deserialize)]
 pub struct AnimationList {
@@ -133,14 +133,36 @@ impl State {
 }
 
 pub fn load(path: PathBuf) -> State {
+  if path.is_dir() {
+    // look for deppo.json
+    let mut json_path = path.clone();
+    json_path.push("deppo.json");
+
+    if json_path.exists() {
+      load_from_file(json_path).unwrap()
+    } else {
+      log!("No deppo.json found in directory. Exiting.");
+      std::process::exit(1);
+    }
+  } else {
+    // If the file is a zip, load from zip,otherwise load from file
+    if path.extension().unwrap_or_default() == "zip" {
+      load_from_zip(path).unwrap()
+    } else {
+      load_from_file(path).unwrap()
+    }
+  }
+}
+
+pub fn load_from_file(path: PathBuf) -> Result<State, std::io::Error> {
   let file = std::fs::read_to_string(&path).unwrap();
   let config: StateConfig = serde_json::from_str(&file).unwrap();
 
-  State {
-    name: path.file_name().unwrap().to_str().unwrap().to_string(),
+  Ok(State {
+    name: config.name.clone(),
     path: path.parent().unwrap().to_path_buf(),
+
     move_state: MovementState::Idle,
-    // This will ensure an animation is loaded right when we start
     move_state_changed: true,
     config,
     current_frame: 0,
@@ -151,7 +173,46 @@ pub fn load(path: PathBuf) -> State {
     velocity_frozen: false,
     velocity: (0., 0.),
     position: (0., 0.),
-  }
+  })
+}
+
+pub fn load_from_zip(zip: PathBuf) -> Result<State, std::io::Error> {
+  let file = File::open(&zip).unwrap();
+  let mut archive = zip::ZipArchive::new(file).unwrap();
+
+  // Find deppo.json
+  let mut config = String::new();
+
+  match archive.by_name("deppo.json") {
+    Ok(mut file) => {
+      file.read_to_string(&mut config)?;
+    }
+    Err(_) => {
+      return Err(std::io::Error::new(
+        std::io::ErrorKind::NotFound,
+        "deppo.json not found in zip",
+      ));
+    }
+  };
+
+  let config: StateConfig = serde_json::from_str(&config)?;
+
+  Ok(State {
+    name: config.name.clone(),
+    path: zip,
+
+    move_state: MovementState::Idle,
+    move_state_changed: true,
+    config,
+    current_frame: 0,
+
+    flip_x: false,
+    flip_y: false,
+
+    velocity_frozen: false,
+    velocity: (0., 0.),
+    position: (0., 0.),
+  })
 }
 
 pub fn load_all_animations(
@@ -167,7 +228,7 @@ pub fn load_all_animations(
           crate::animation::raw_to_texture_2d(
             rl,
             thread,
-            &crate::animation::load_gif(state.path.join(path)),
+            &crate::animation::load_gif(&state, path.clone()),
           )
         })
         .collect()
@@ -179,7 +240,7 @@ pub fn load_all_animations(
           crate::animation::raw_to_texture_2d(
             rl,
             thread,
-            &crate::animation::load_gif(state.path.join(path)),
+            &crate::animation::load_gif(&state, path.clone()),
           )
         })
         .collect()
@@ -191,7 +252,7 @@ pub fn load_all_animations(
           crate::animation::raw_to_texture_2d(
             rl,
             thread,
-            &crate::animation::load_gif(state.path.join(path)),
+            &crate::animation::load_gif(&state, path.clone()),
           )
         })
         .collect()
@@ -203,7 +264,7 @@ pub fn load_all_animations(
           crate::animation::raw_to_texture_2d(
             rl,
             thread,
-            &crate::animation::load_gif(state.path.join(path)),
+            &crate::animation::load_gif(&state, path.clone()),
           )
         })
         .collect()
@@ -215,7 +276,7 @@ pub fn load_all_animations(
           crate::animation::raw_to_texture_2d(
             rl,
             thread,
-            &crate::animation::load_gif(state.path.join(path)),
+            &crate::animation::load_gif(&state, path.clone()),
           )
         })
         .collect()

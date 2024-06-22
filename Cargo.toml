@@ -3,6 +3,10 @@ name = "deppo"
 version = "0.1.0"
 edition = "2021"
 
+[profile.release]
+lto = true
+strip = "debuginfo"
+
 [dependencies]
 chrono = "0.4.38"
 gif = "0.13.1"
@@ -12,6 +16,7 @@ rand = "0.8.5"
 raylib = "5.0.1"
 serde = { version = "1.0.203", features = ["derive"] }
 serde_json = "1.0.117"
+zip = "2.1.3"
 
 [dependencies.windows]
 version = "0.57.0"

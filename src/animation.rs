@@ -1,6 +1,6 @@
-use std::{fs::File, path::PathBuf};
+use std::{fs::File, io::Read, path::PathBuf};
 
-use crate::log;
+use crate::{log, runtime::state::State};
 
 pub struct Gif {
   pub width: u16,
@@ -13,8 +13,6 @@ pub struct Gif {
 }
 
 pub struct AnimationRaw {
-  pub name: String,
-
   pub width: u16,
   pub height: u16,
 
@@ -26,7 +24,6 @@ pub struct AnimationRaw {
 }
 
 pub struct AnimationTexture2D {
-  pub name: String,
   pub width: u16,
   pub height: u16,
 
@@ -36,13 +33,14 @@ pub struct AnimationTexture2D {
   pub frame_count: u32,
 }
 
-pub fn load_gif(path: PathBuf) -> AnimationRaw {
-  log!("Loading gif: {:?}", path);
-  let file = File::open(&path).unwrap();
+pub fn load_gif_file<R>(r: R) -> AnimationRaw
+where
+  R: Read,
+{
   let mut decoder = gif::DecodeOptions::new();
   decoder.set_color_output(gif::ColorOutput::RGBA);
 
-  let mut decoder = decoder.read_info(file).unwrap();
+  let mut decoder = decoder.read_info(r).unwrap();
   let mut frame_count = 0;
   let mut frames: Vec<Gif> = Vec::new();
 
@@ -60,7 +58,6 @@ pub fn load_gif(path: PathBuf) -> AnimationRaw {
 
   // Create an Animation struct
   AnimationRaw {
-    name: path.file_name().unwrap().to_str().unwrap().to_string(),
     width: frames[0].width,
     height: frames[0].height,
     frames: frames.iter().map(frame_to_png).collect(),
@@ -70,13 +67,45 @@ pub fn load_gif(path: PathBuf) -> AnimationRaw {
   }
 }
 
+pub fn load_gif_from_zip(state: &State, path: String) -> AnimationRaw {
+  log!("Loading gif from zip: {:?}", path);
+  let file = File::open(&state.path).unwrap();
+  let mut archive = zip::ZipArchive::new(file).unwrap();
+
+  // Find the file in the zip
+  let gif_file = match archive.by_name(&path) {
+    Ok(file) => file,
+    Err(_) => {
+      log!("Gif not found in zip: {:?}", path);
+      std::process::exit(1);
+    }
+  };
+  
+  load_gif_file(gif_file)
+}
+
+pub fn load_gif_from_file(state: &State, path: String) -> AnimationRaw {
+  log!("Loading gif from raw file: {:?}", path);
+  let full_path = state.path.join(&path);
+  let file = File::open(&full_path).unwrap();
+  
+  load_gif_file(file)
+}
+
+pub fn load_gif(state: &State, path: String) -> AnimationRaw {
+  if state.path.extension().unwrap_or_default() == "zip" {
+    load_gif_from_zip(state, path)
+  } else {
+    load_gif_from_file(state, path)
+  }
+}
+
 pub fn raw_to_texture_2d(
   rl: &mut raylib::prelude::RaylibHandle,
   thread: &raylib::prelude::RaylibThread,
   anim: &AnimationRaw,
 ) -> AnimationTexture2D {
   AnimationTexture2D {
-    name: anim.name.clone(),
     width: anim.width,
     height: anim.height,
     frames: anim
@@ -93,7 +122,7 @@ pub fn raw_to_texture_2d(
   }
 }
 
-// Conver the frame buffer to a PNG
+// Convert the frame buffer to a PNG
 pub fn frame_to_png(frame: &Gif) -> Vec<u8> {
   let mut png = Vec::new();
   let mut encoder = png::Encoder::new(&mut png, frame.width as u32, frame.height as u32);
