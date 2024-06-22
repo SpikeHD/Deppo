@@ -10,7 +10,11 @@ pub fn do_gravity(state: &mut State, rl: &mut RaylibHandle) {
     return;
   }
 
-  let max_vel = state.config.physics.max_velocity.unwrap_or(DEFAULT_MAX_VELOCITY);
+  let max_vel = state
+    .config
+    .physics
+    .max_velocity
+    .unwrap_or(DEFAULT_MAX_VELOCITY);
 
   // Limit Y velocity
   if state.velocity.1.abs() > max_vel {
@@ -92,7 +96,7 @@ pub fn handle_friction(state: &mut State) {
   }
 
   if state.velocity.1 == 0.0 && state.velocity.0.abs() > 0.0 {
-    state.velocity.0 = state.velocity.0 * 0.9;
+    state.velocity.0 *= 0.9;
   }
 
   // If low enough, just set to 0

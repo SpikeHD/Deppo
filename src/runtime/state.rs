@@ -263,7 +263,7 @@ pub fn load_all_animations(
           crate::animation::raw_to_texture_2d(
             rl,
             thread,
-            &crate::animation::load_gif(&state, path.clone()),
+            &crate::animation::load_gif(state, path.clone()),
           )
         })
         .collect()
@@ -275,7 +275,7 @@ pub fn load_all_animations(
           crate::animation::raw_to_texture_2d(
             rl,
             thread,
-            &crate::animation::load_gif(&state, path.clone()),
+            &crate::animation::load_gif(state, path.clone()),
           )
         })
         .collect()
@@ -287,7 +287,7 @@ pub fn load_all_animations(
           crate::animation::raw_to_texture_2d(
             rl,
             thread,
-            &crate::animation::load_gif(&state, path.clone()),
+            &crate::animation::load_gif(state, path.clone()),
           )
         })
         .collect()
@@ -299,7 +299,7 @@ pub fn load_all_animations(
           crate::animation::raw_to_texture_2d(
             rl,
             thread,
-            &crate::animation::load_gif(&state, path.clone()),
+            &crate::animation::load_gif(state, path.clone()),
           )
         })
         .collect()
@@ -311,7 +311,7 @@ pub fn load_all_animations(
           crate::animation::raw_to_texture_2d(
             rl,
             thread,
-            &crate::animation::load_gif(&state, path.clone()),
+            &crate::animation::load_gif(state, path.clone()),
           )
         })
         .collect()

@@ -1,4 +1,4 @@
-use std::{fs::File, io::Read, path::PathBuf};
+use std::{fs::File, io::Read};
 
 use crate::{log, runtime::state::State};
 
@@ -80,15 +80,15 @@ pub fn load_gif_from_zip(state: &State, path: String) -> AnimationRaw {
       std::process::exit(1);
     }
   };
-  
+
   load_gif_file(gif_file)
 }
 
 pub fn load_gif_from_file(state: &State, path: String) -> AnimationRaw {
   log!("Loading gif from raw file: {:?}", path);
   let full_path = state.path.join(&path);
-  let file = File::open(&full_path).unwrap();
-  
+  let file = File::open(full_path).unwrap();
+
   load_gif_file(file)
 }
 

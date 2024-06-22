@@ -1,11 +1,14 @@
 use cocoa::base::id;
-use objc::{class, msg_send, sel, sel_impl};
 use objc::runtime::{Class, Object, Sel};
+use objc::{class, msg_send, sel, sel_impl};
 
 pub fn desktop_size() -> (u32, u32) {
   let current_monitor = raylib::core::window::get_current_monitor();
 
-  println!("height: {}", raylib::core::window::get_monitor_height(current_monitor));
+  println!(
+    "height: {}",
+    raylib::core::window::get_monitor_height(current_monitor)
+  );
 
   (
     raylib::core::window::get_monitor_width(current_monitor) as u32,

@@ -29,7 +29,10 @@ pub fn handle_mouse(rl: &mut RaylibHandle, state: &mut State, width: i32, _heigh
     }
 
     // Set state mouse positions
-    state.mouse_position = ((current_mouse_pos.x, current_mouse_pos.y), state.mouse_position.0);
+    state.mouse_position = (
+      (current_mouse_pos.x, current_mouse_pos.y),
+      state.mouse_position.0,
+    );
 
     // Ignore if mouse pos is negative
     if current_mouse_pos.x > 0.0 || current_mouse_pos.y > 0.0 {
@@ -41,14 +44,18 @@ pub fn handle_mouse(rl: &mut RaylibHandle, state: &mut State, width: i32, _heigh
       state.handle_state_change(super::state::MovementState::Drag);
     }
   } else if state.velocity_frozen {
-    let max_vel = state.config.physics.max_velocity.unwrap_or(DEFAULT_MAX_VELOCITY);
+    let max_vel = state
+      .config
+      .physics
+      .max_velocity
+      .unwrap_or(DEFAULT_MAX_VELOCITY);
 
     state.velocity_frozen = false;
-    
+
     // Set the velocity to whatever the velocity is based on the current and last mouse position
     let velocity = (
-      (state.mouse_position.0.0 - current_mouse_pos.x).clamp(-max_vel, max_vel),
-      (state.mouse_position.0.1 - current_mouse_pos.y).clamp(-max_vel, max_vel),
+      (state.mouse_position.0 .0 - current_mouse_pos.x).clamp(-max_vel, max_vel),
+      (state.mouse_position.0 .1 - current_mouse_pos.y).clamp(-max_vel, max_vel),
     );
 
     state.set_velocity(velocity);
