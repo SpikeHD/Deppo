@@ -9,13 +9,16 @@ pub fn list_deppos() -> Vec<String> {
   let mut deppos = Vec::new();
 
   // List each dir OR <file>.deppo/<file>.zip
-  for entry in deppo_dir.read_dir().expect("Failed to read deppo directory") {
+  for entry in deppo_dir
+    .read_dir()
+    .expect("Failed to read deppo directory")
+  {
     let entry = match entry {
       Ok(entry) => entry,
       Err(_) => {
         log!("Failed to read entry in deppo directory.");
         std::process::exit(1);
-      },
+      }
     };
     let path = entry.path();
 
@@ -28,7 +31,7 @@ pub fn list_deppos() -> Vec<String> {
 pub fn get_current_deppo_file() -> PathBuf {
   let config = get_config();
   let deppo_dir = deppo_path();
-  
+
   let deppo_file = deppo_dir.join(&config.deppo);
 
   // If it doesn't exist, just use the first deppo
@@ -44,14 +47,14 @@ pub fn get_current_deppo_file() -> PathBuf {
 }
 
 pub fn load_from_file(path: &PathBuf) -> Result<StateConfig, std::io::Error> {
-  let file = std::fs::read_to_string(&path)?;
+  let file = std::fs::read_to_string(path)?;
   let config: StateConfig = serde_json::from_str(&file)?;
 
   Ok(config)
 }
 
 pub fn load_from_zip(path: &PathBuf) -> Result<StateConfig, std::io::Error> {
-  let file = std::fs::File::open(&path)?;
+  let file = std::fs::File::open(path)?;
   let mut archive = zip::ZipArchive::new(file)?;
 
   let mut config_file = archive.by_name("deppo.json")?;
@@ -77,7 +80,9 @@ pub fn load_deppo(path: &PathBuf) -> StateConfig {
     }
   } else {
     // If the file is a zip, load from zip,otherwise load from file
-    if path.extension().unwrap_or_default() == "zip" || path.extension().unwrap_or_default() == "deppo" {
+    if path.extension().unwrap_or_default() == "zip"
+      || path.extension().unwrap_or_default() == "deppo"
+    {
       load_from_zip(path).unwrap_or_else(|e| {
         log!("Failed to load archive: {}", e);
         std::process::exit(1);

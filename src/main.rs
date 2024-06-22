@@ -1,5 +1,8 @@
 use raylib::prelude::*;
-use util::{args::has_arg, deppos::{get_current_deppo_file, list_deppos}};
+use util::{
+  args::has_arg,
+  deppos::{get_current_deppo_file, list_deppos},
+};
 
 mod animation;
 mod menu;
@@ -24,7 +27,7 @@ fn child_is_alive(child: &mut std::process::Child) -> bool {
 
 fn main() {
   // Opening in menu mode
-  if util::args::menu() || list_deppos().len() == 0 {
+  if util::args::menu() || list_deppos().is_empty() {
     menu::run();
     return;
   }
@@ -72,7 +75,10 @@ fn main() {
     runtime::control::handle_mouse(&mut rl, &mut state, w_final, h_final);
 
     // Handle opening menu
-    if runtime::control::maybe_open_menu(&mut rl) && (state.menu_process_handle.is_none() || !child_is_alive(state.menu_process_handle.as_mut().unwrap())) {
+    if runtime::control::maybe_open_menu(&mut rl)
+      && (state.menu_process_handle.is_none()
+        || !child_is_alive(state.menu_process_handle.as_mut().unwrap()))
+    {
       // Spawn ourselves, but with the -menu flag
       let mut cmd = std::process::Command::new(std::env::current_exe().unwrap());
       cmd.arg("-menu");
@@ -138,7 +144,6 @@ fn main() {
         frame.height as f32
       },
     );
-
 
     let mut d = rl.begin_drawing(&thread);
 

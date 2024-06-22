@@ -1,6 +1,6 @@
 use raylib::ffi::TraceLogLevel;
 
-use crate::util::config::{get_config, save_config, write_config_file};
+use crate::util::config::{get_config, save_config};
 
 mod color;
 mod display;

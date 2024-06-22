@@ -1,17 +1,14 @@
-use std::{
-  fs,
-  path::PathBuf
-};
+use std::{fs, path::PathBuf};
 
-use crate::log;
 use super::config;
+use crate::log;
 
 pub fn is_portable() -> bool {
   match std::env::current_exe().unwrap_or_default().parent() {
     Some(parent) => {
       // Check if parent contains .port file
       parent.join(".port").exists()
-    },
+    }
     None => {
       log!("Error getting current exe parent");
       false

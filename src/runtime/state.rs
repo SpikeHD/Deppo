@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 use serde_inline_default::serde_inline_default;
-use std::{fs::File, io::Read, path::PathBuf};
+use std::path::PathBuf;
 
 use crate::{animation::AnimationTexture2D, log, util::deppos};
 
@@ -175,7 +175,9 @@ pub fn load(path: PathBuf) -> State {
     }
   } else {
     // If the file is a zip, load from zip,otherwise load from file
-    if path.extension().unwrap_or_default() == "zip" || path.extension().unwrap_or_default() == "deppo" {
+    if path.extension().unwrap_or_default() == "zip"
+      || path.extension().unwrap_or_default() == "deppo"
+    {
       load_from_zip(path).unwrap_or_else(|e| {
         log!("Failed to load archive: {}", e);
         std::process::exit(1);
@@ -191,7 +193,7 @@ pub fn load(path: PathBuf) -> State {
 
 pub fn load_from_file(path: PathBuf) -> Result<State, std::io::Error> {
   let config = deppos::load_from_file(&path)?;
-  
+
   Ok(State {
     name: config.name.clone(),
     path: path.parent().unwrap_or(&path).to_path_buf(),

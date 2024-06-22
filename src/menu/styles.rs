@@ -12,7 +12,7 @@ pub fn set_general_styles(d: &mut RaylibDrawHandle) {
   d.gui_set_style(
     GuiControl::DEFAULT,
     GuiDefaultProperty::TEXT_SIZE as i32,
-    20
+    20,
   );
 }
 
@@ -26,49 +26,48 @@ pub fn set_toggle_styles(d: &mut RaylibDrawHandle) {
   d.gui_set_style(
     GuiControl::TOGGLE,
     GuiControlProperty::BORDER_COLOR_NORMAL as i32,
-    enabled_border
+    enabled_border,
   );
 
   // and the background
   d.gui_set_style(
     GuiControl::TOGGLE,
     GuiControlProperty::BASE_COLOR_NORMAL as i32,
-    enabled_background
+    enabled_background,
   );
 
   // And disabled
   d.gui_set_style(
     GuiControl::TOGGLE,
     GuiControlProperty::BORDER_COLOR_PRESSED as i32,
-    disabled_border
+    disabled_border,
   );
 
   d.gui_set_style(
     GuiControl::TOGGLE,
     GuiControlProperty::BASE_COLOR_PRESSED as i32,
-    disabled_background
+    disabled_background,
   );
 
   // font color white
   d.gui_set_style(
     GuiControl::TOGGLE,
     GuiControlProperty::TEXT_COLOR_NORMAL as i32,
-    rgba_to_int32(255, 255, 255, 255)
+    rgba_to_int32(255, 255, 255, 255),
   );
 
   d.gui_set_style(
     GuiControl::TOGGLE,
     GuiControlProperty::TEXT_COLOR_PRESSED as i32,
-    rgba_to_int32(255, 255, 255, 255)
+    rgba_to_int32(255, 255, 255, 255),
   );
 }
 
 pub fn set_label_styles(d: &mut RaylibDrawHandle) {
-
   d.gui_set_style(
     GuiControl::LABEL,
     GuiControlProperty::TEXT_COLOR_NORMAL as i32,
     // This is a 32 bit int representing a color
-    rgba_to_int32(255, 255, 255, 255)
+    rgba_to_int32(255, 255, 255, 255),
   );
 }
