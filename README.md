@@ -25,6 +25,7 @@
 * [Table of Contents](#table-of-contents)
 * [Download](#download)
 * [What is Deppo?](#what-is-deppo)
+* [Video Demo}(video-demo)
 * [Quickstart](#quickstart)
 * [Make your own!](#make-your-own)
 * [Building](#building)
@@ -42,6 +43,15 @@ All downloads can be found on the [releases page](https://github.com/SpikeHD/Dep
 Deppo is a highly customizable desktop companion engine! With Deppo, you can use, create, and share little friends that live on your computer screen, all while using minimal resources. Deppos can move around, be dragged, and even thrown around!
 
 Deppos are not just critters of course. With Deppo, you can also display regular GIFs or images on your screen with very little effort. You can disable movement behaviours, drag-ability, and everything else you may or may not want.
+
+# Video Demo
+
+<div align="center">
+  <video width="75%" src="https://github.com/SpikeHD/Deppo/assets/25207995/86ba9087-2c57-46be-83bf-b040e1c0f9c6" />
+  </video>
+</div>
+
+(Excuse the programmer art)
 
 # Quickstart
 
