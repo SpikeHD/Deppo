@@ -1,6 +1,8 @@
 use raylib::prelude::*;
 use util::{
-  args::has_arg, config, deppos::{get_current_deppo_file, list_deppos}
+  args::has_arg,
+  config,
+  deppos::{get_current_deppo_file, list_deppos},
 };
 
 mod animation;
@@ -161,7 +163,13 @@ fn main() {
       let font_size = (8. * state.config.scale.unwrap_or(1.)).floor() as i32;
 
       // Draw text that says the current move state
-      d.draw_text(&format!("{:?}", state.move_state), 10, 10, font_size, Color::WHITE);
+      d.draw_text(
+        &format!("{:?}", state.move_state),
+        10,
+        10,
+        font_size,
+        Color::WHITE,
+      );
 
       // Draw current FPS
       d.draw_text(
