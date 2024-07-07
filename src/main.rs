@@ -1,7 +1,6 @@
 use raylib::prelude::*;
 use util::{
-  args::has_arg,
-  deppos::{get_current_deppo_file, list_deppos},
+  args::has_arg, config, deppos::{get_current_deppo_file, list_deppos}
 };
 
 mod animation;
@@ -34,6 +33,7 @@ fn main() {
 
   // TODO make configurable
   let mut state = runtime::state::load(get_current_deppo_file());
+  let config = config::get_config();
 
   let (mut rl, thread) = raylib::init()
     .title("Deppo")
@@ -157,8 +157,30 @@ fn main() {
       Color::WHITE,
     );
 
-    // Draw text that says the current move state
-    // d.draw_text(&format!("{:?}", state.move_state), 10, 10, 20, Color::WHITE);
+    if config.show_debug_info {
+      let font_size = (8. * state.config.scale.unwrap_or(1.)).floor() as i32;
+
+      // Draw text that says the current move state
+      d.draw_text(&format!("{:?}", state.move_state), 10, 10, font_size, Color::WHITE);
+
+      // Draw current FPS
+      d.draw_text(
+        &format!("fps: {}", d.get_fps()),
+        10,
+        30,
+        font_size,
+        Color::WHITE,
+      );
+
+      // Show the current deppo
+      d.draw_text(
+        &format!("Deppo: {}", state.config.name),
+        10,
+        50,
+        font_size,
+        Color::WHITE,
+      );
+    }
 
     state.current_frame += 1;
     if state.current_frame >= rl_anim.frame_count {

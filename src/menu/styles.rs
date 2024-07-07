@@ -25,27 +25,27 @@ pub fn set_toggle_styles(d: &mut RaylibDrawHandle) {
   // Enabled should be green
   d.gui_set_style(
     GuiControl::TOGGLE,
-    GuiControlProperty::BORDER_COLOR_NORMAL as i32,
+    GuiControlProperty::BORDER_COLOR_PRESSED as i32,
     enabled_border,
   );
 
   // and the background
   d.gui_set_style(
     GuiControl::TOGGLE,
-    GuiControlProperty::BASE_COLOR_NORMAL as i32,
+    GuiControlProperty::BASE_COLOR_PRESSED as i32,
     enabled_background,
   );
 
   // And disabled
   d.gui_set_style(
     GuiControl::TOGGLE,
-    GuiControlProperty::BORDER_COLOR_PRESSED as i32,
+    GuiControlProperty::BORDER_COLOR_NORMAL as i32,
     disabled_border,
   );
 
   d.gui_set_style(
     GuiControl::TOGGLE,
-    GuiControlProperty::BASE_COLOR_PRESSED as i32,
+    GuiControlProperty::BASE_COLOR_NORMAL as i32,
     disabled_background,
   );
 
