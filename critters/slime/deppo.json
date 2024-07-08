@@ -12,7 +12,7 @@
   "can_fall": true,
 
   "animations": {
-    "idle": ["idle/idle.gif"],
+    "idle": ["idle.gif"],
     "fall": ["fall.gif"],
     "drag": ["drag.gif"],
     "walk": ["walk.gif"]
