@@ -25,7 +25,7 @@
 * [Table of Contents](#table-of-contents)
 * [Download](#download)
 * [What is Deppo?](#what-is-deppo)
-* [Video Demo}(video-demo)
+* [Video Demo](#video-demo)
 * [Quickstart](#quickstart)
 * [Make your own!](#make-your-own)
 * [Building](#building)
