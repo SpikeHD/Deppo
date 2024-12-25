@@ -48,7 +48,9 @@ pub fn get_current_deppo_file() -> PathBuf {
 
 pub fn load_from_file(path: &PathBuf) -> Result<StateConfig, std::io::Error> {
   let file = std::fs::read_to_string(path)?;
-  let config: StateConfig = serde_json::from_str(&file)?;
+  let mut config: StateConfig = serde_json::from_str(&file)?;
+
+  config.filename = Some(path.file_name().unwrap().to_str().unwrap().to_string());
 
   Ok(config)
 }
@@ -61,7 +63,9 @@ pub fn load_from_zip(path: &PathBuf) -> Result<StateConfig, std::io::Error> {
   let mut config_str = String::new();
   config_file.read_to_string(&mut config_str)?;
 
-  let config: StateConfig = serde_json::from_str(&config_str)?;
+  let mut config: StateConfig = serde_json::from_str(&config_str)?;
+
+  config.filename = Some(path.file_name().unwrap().to_str().unwrap().to_string());
 
   Ok(config)
 }

@@ -81,7 +81,7 @@ pub fn draw_gui(state: &mut State, d: &mut RaylibDrawHandle) {
 
     if d.gui_button(Rectangle::new(0., y, width, 40.), Some(text.as_c_str())) {
       log!("Switching to Deppo: {:?}", deppo.name);
-      state.config.deppo.clone_from(&deppo.name);
+      state.config.deppo.clone_from(&deppo.filename.clone().unwrap_or(deppo.name.clone()));
     }
 
     y += 50.;

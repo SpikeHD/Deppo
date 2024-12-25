@@ -33,6 +33,7 @@ pub struct PhysicsConfig {
 #[serde_inline_default]
 #[derive(Serialize, Deserialize)]
 pub struct StateConfig {
+  pub filename: Option<String>,
   pub name: String,
   pub author: Option<String>,
   #[serde_inline_default(30)]

@@ -80,7 +80,7 @@ Deppo is still in development, but you can test it using the following links!
 
 Deppo is a highly customizable desktop companion engine! With Deppo, you can use, create, and share little friends that live on your computer screen, all while using minimal resources. Deppos can move around, be dragged, and even thrown around!
 
-Deppos are not just critters of course. With Deppo, you can also display regular GIFs or images on your screen with very little effort. You can disable movement behaviours, drag-ability, and everything else you may or may not want.
+Deppos are not just critters of course. With Deppo, you can also display regular GIFs or images on your screen with very little effort. You can configure and disable movement behaviours, drag-ability, and everything else you may or may not want.
 
 # Video Demo
 
