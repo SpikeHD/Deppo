@@ -82,8 +82,9 @@ Deppo is a highly customizable desktop companion engine! With Deppo, you can use
 
 Deppos are not just critters of course. With Deppo, you can also display regular GIFs or images on your screen with very little effort. You can configure and disable movement behaviours, drag-ability, and everything else you may or may not want.
 
-# Video Demo
+# Demonstration
 
+## Video Demo
 <div align="center">
   <video width="75%" src="https://github.com/SpikeHD/Deppo/assets/25207995/86ba9087-2c57-46be-83bf-b040e1c0f9c6" />
   </video>
@@ -91,9 +92,37 @@ Deppos are not just critters of course. With Deppo, you can also display regular
 
 (Excuse the programmer art)
 
+## Screenshots
+
+<table align="center">
+  <tr>
+    <td align="center">
+      Deppos hang out anywhere on your screen, and sit right on your taskbar, if you let them! 
+    </td>
+    <td align="center">
+      <img src="docs/image/examples/1.png" height="300px" align="center" />
+    </td>
+  </tr>
+
+  <tr>
+    <td align="center">
+      Deppos can also be static images!
+      <br />
+      <br />
+      <sup>(If somebody knows the artist, let me know and I'll credit them here)</sup>
+    </td>
+    <td align="center">
+      <img src="docs/image/examples/2.png" height="300px" align="center" />
+    </td>
+  </tr>
+</table>
+
 # Quickstart
 
-TODO
+1. After downloading Deppo and opening it for the first time, you will be greeted with a menu.
+2. Click "Open Deppos Folder" to open the folder where Deppos are stored. **This is where you put folders/zip files
+containing each Deppo!**
+3. When you add Deppos, restart the program and you should see them listed. **Click on one, then restart the program again!**
 
 # Make Your Own!
 
