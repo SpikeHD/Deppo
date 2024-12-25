@@ -36,7 +36,45 @@
 
 # Download
 
-All downloads can be found on the [releases page](https://github.com/SpikeHD/Deppo/releases). If you're unsure, download the **Windows x86** version.
+~~All downloads can be found on the [releases page](https://github.com/SpikeHD/Deppo/releases). If you're unsure, download the **Windows x86** version.~~
+
+Deppo is still in development, but you can test it using the following links!
+
+<table align="center">
+  <tr>
+    <th>
+      <img src="docs/image/windows.png" width="30%" align="center" />
+    </th>
+    <th>
+      <img src="docs/image/apple.png" width="30%" align="center" />
+    </th>
+    <th>
+      <img src="docs/image/debian.png" width="30%" align="center" />
+    </th>
+  </tr>
+
+  <tr>
+    <td width="30%">
+      <div align="center">
+        <a href="https://nightly.link/SpikeHD/Deppo/workflows/build/main/Deppo%20Windows%20x86_64.zip">x86_64</a>
+        <span>|</span>
+        <a href="https://nightly.link/SpikeHD/Deppo/workflows/build/main/Deppo%20Windows%20ARM64.zip">ARM</a>
+      </div>
+    </td>
+    <td width="30%">
+      <div align="center">
+        <a href="https://nightly.link/SpikeHD/Deppo/workflows/build/main/Deppo%20macOS%20x86_64.zip">x86_64</a>
+        <span>|</span>
+        <a href="https://nightly.link/SpikeHD/Deppo/workflows/build/main/Deppo%20macOS%20ARM64.zip">ARM</a>
+      </div>
+    </td>
+    <td width="30%">
+      <div align="center">
+        <a href="https://nightly.link/SpikeHD/Deppo/workflows/build/main/Deppo%20Linux%20x86_64.zip">x86_64</a>
+      </div>
+    </td>
+  </tr>
+</table>
 
 # What is Deppo?
 
