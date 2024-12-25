@@ -8,6 +8,7 @@ Creating a Deppo is easy! All you need is a single `.gif` file (or more, for dif
 * [Deppo Configuration](#deppo-configuration)
   * [Syntax](#syntax)
   * [Reference](#reference)
+* [Quick Templates](#quick-templates)
 
 # Step-by-step
 
@@ -84,3 +85,28 @@ Deppo configurations use typical JSON format. If you are unfamiliar, that's okay
   * `fall`: The Deppo's falling animation(s).
   * `drag`: The Deppo's being-dragged animation(s).
   * `walk`: The Deppo's walking animation(s).
+
+# Quick Templates
+
+## A static Deppo
+
+```json
+{
+  "name": "YOUR_NAME_HERE",
+  "fps": 15,
+  "timescale": 1,
+  "scale": 1,
+
+  "behaviour_change_rarity": 0,
+  "move_speed": 0,
+
+  "can_move": false,
+  "can_drag": true,
+  "can_click": false,
+  "can_fall": false,
+
+  "animations": {
+    "idle": ["idle.gif"]
+  }
+}
+```
