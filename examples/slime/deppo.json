@@ -1,0 +1,20 @@
+{
+  "name": "Slime",
+  "fps": 30,
+  "scale": 2,
+
+  "behaviour_change_rarity": 40,
+  "move_speed": 3,
+
+  "can_move": true,
+  "can_drag": true,
+  "can_click": false,
+  "can_fall": true,
+
+  "animations": {
+    "idle": ["idle/idle.gif"],
+    "fall": ["fall.gif"],
+    "drag": ["drag.gif"],
+    "walk": ["walk.gif"]
+  }
+}
