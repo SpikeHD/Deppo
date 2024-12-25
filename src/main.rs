@@ -4,6 +4,7 @@ use util::{
   config,
   deppos::{get_current_deppo_file, list_deppos},
 };
+use window::platform::force_foreground;
 
 mod animation;
 mod menu;
@@ -45,7 +46,7 @@ fn main() {
     .build();
 
   // TODO this doesn't work but I would like it to!!
-  rl.get_window_state().set_window_topmost(true);
+  unsafe { force_foreground(rl.get_window_handle()) };
 
   let animation_list = runtime::state::load_all_animations(&mut rl, &thread, &state);
   let mut rl_anims = animation_list.idle.as_ref().unwrap_or_else(|| {

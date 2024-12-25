@@ -1,4 +1,19 @@
-use windows::Win32::{Foundation::RECT, UI};
+use std::os::raw::c_void;
+
+use windows::Win32::{Foundation::{HWND, RECT}, UI::{self, WindowsAndMessaging::{SetWindowPos, HWND_TOPMOST, SWP_NOMOVE, SWP_NOSIZE}}};
+
+use crate::log;
+
+pub fn force_foreground(hwnd: *mut c_void) {
+  let x = desktop_size().0 as i32 / 2;
+  let y = desktop_size().1 as i32 / 2;
+
+  unsafe {
+    SetWindowPos(HWND(hwnd), HWND_TOPMOST, x, y, 0, 0, SWP_NOSIZE | SWP_NOMOVE).unwrap_or_else(|e| {
+      log!("Failed to force window to foreground: {}", e);
+    });
+  }
+}
 
 pub fn desktop_size() -> (u32, u32) {
   let current_monitor = raylib::core::window::get_current_monitor();

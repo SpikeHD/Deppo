@@ -1,3 +1,7 @@
+pub fn force_foreground(hwnd: u32) {
+  // TODO WIP
+}
+
 pub fn desktop_size() -> (u32, u32) {
   let current_monitor = raylib::core::window::get_current_monitor();
 

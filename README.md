@@ -152,7 +152,8 @@ You can find a comprehesive guide and reference for creating your own Deppo in t
 * [ ] Click behaviour
 * [ ] ARM Linux support
 * [ ] Example Deppos
-* [ ] Always-on-top
+* [x] Always-on-top
+  * [ ] Stop/minimize when fullscreen app is running
 * [ ] More documentation
 
 # Contributing

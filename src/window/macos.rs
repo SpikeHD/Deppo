@@ -2,6 +2,10 @@ use cocoa::base::id;
 use objc::runtime::{Class, Object, Sel};
 use objc::{class, msg_send, sel, sel_impl};
 
+pub fn force_foreground(hwnd: cocoa::base::id) {
+  // TODO WIP
+}
+
 pub fn desktop_size() -> (u32, u32) {
   let current_monitor = raylib::core::window::get_current_monitor();
 
